@@ -1,0 +1,33 @@
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-border-width: 0 0 2px 0;
+    -fx-border-radius: 0;
+    -fx-prompt-text-fill: gray;
+    -fx-padding: 5 0 5 0;
+    -fx-alignment: center; /* Centers input text */
+    -fx-text-alignment: center; /* Ensures prompt text alignment */
+}
+
+.text-field:focused {
+    -fx-prompt-text-fill: transparent;
+}
+
+.check-box {
+    -fx-text-fill: black; /* Set text color to black */
+}
+
+.check-box .box {
+    -fx-background-color: white; /* Fill color */
+    -fx-border-color: black; /* Border color */
+    -fx-border-width: 2px; /* Border thickness */
+}
+
+.check-box:selected .box {
+    -fx-background-color: black; /* Fill color when checked */
+    -fx-border-color: black; /* Keep border color black */
+}
+
+.check-box .mark {
+    -fx-background-color: white; /* Checkmark color */
+}

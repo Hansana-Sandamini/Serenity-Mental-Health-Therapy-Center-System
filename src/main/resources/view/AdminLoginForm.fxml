@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="adminLoginPane" prefHeight="800.0" prefWidth="1300.0" style="-fx-background-color: #caf0f8;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.hibernate.serenitymentalhealththerapycenter.controller.AdminLoginFormController">
+   <children>
+      <ImageView fitHeight="930.0" fitWidth="1539.0" layoutY="-131.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/images/login-background.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="407.0" fitWidth="511.0" layoutX="644.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/images/login-page.jpg" />
+         </image></ImageView>
+      <AnchorPane layoutX="172.0" layoutY="167.0" prefHeight="407.0" prefWidth="455.0" style="-fx-background-color: white; -fx-background-radius: 20;" stylesheets="@../assets/styles/styles.css">
+         <children>
+            <Label alignment="CENTER" layoutX="88.0" layoutY="25.0" prefHeight="56.0" prefWidth="273.0" text="Admin Login">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnAdminLogin" layoutX="151.0" layoutY="321.0" mnemonicParsing="false" onAction="#btnAdminLoginOnAction" prefHeight="47.0" prefWidth="142.0" style="-fx-background-radius: 10; -fx-background-color: #023e8a;" text="Login" textFill="WHITE">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
+            <TextField fx:id="txtAdminUserName" layoutX="55.0" layoutY="127.0" prefHeight="52.0" prefWidth="280.0" promptText="Username">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <PasswordField fx:id="txtAdminPassword" layoutX="55.0" layoutY="209.0" onKeyReleased="#txtAdminPasswordOnKeyReleased" prefHeight="52.0" prefWidth="280.0" promptText="Password">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </PasswordField>
+            <ImageView fx:id="adminLoginBackIcon" fitHeight="52.0" fitWidth="61.0" layoutX="27.0" layoutY="26.0" onMouseClicked="#adminLoginBackIconOnAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/images/back-icon.jpeg" />
+               </image></ImageView>
+            <CheckBox fx:id="checkShow" layoutX="352.0" layoutY="229.0" mnemonicParsing="false" onAction="#checkShowOnAction" prefHeight="26.0" prefWidth="64.0" text="Show" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
