@@ -3,6 +3,6 @@ module lk.ijse.hibernate.serenitymentalhealththerapycenter {
     requires javafx.fxml;
 
 
-    opens lk.ijse.hibernate.serenitymentalhealththerapycenter to javafx.fxml;
+    opens lk.ijse.hibernate.serenitymentalhealththerapycenter.controller to javafx.fxml;
     exports lk.ijse.hibernate.serenitymentalhealththerapycenter;
 }
