@@ -2,6 +2,7 @@ package lk.ijse.hibernate.serenitymentalhealththerapycenter.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
@@ -10,6 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
 
 public class ReceptionistLoginFormController {
 
@@ -42,8 +45,10 @@ public class ReceptionistLoginFormController {
     }
 
     @FXML
-    void receptionistLoginBackIconOnAction(MouseEvent event) {
-
+    void receptionistLoginBackIconOnAction(MouseEvent event) throws IOException {
+        receptionistLoginPane.getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/WelcomeForm.fxml"));
+        receptionistLoginPane.getChildren().add(load);
     }
 
     @FXML
