@@ -40,6 +40,6 @@ public class WelcomeFormController {
 
     @FXML
     void navigateToReceptionistLoginForm(ActionEvent event) {
-
+        navigateTo("/view/ReceptionistLoginForm.fxml");
     }
 }

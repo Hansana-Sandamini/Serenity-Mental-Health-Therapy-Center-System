@@ -5,8 +5,8 @@
     -fx-border-radius: 0;
     -fx-prompt-text-fill: gray;
     -fx-padding: 5 0 5 0;
-    -fx-alignment: center; /* Centers input text */
-    -fx-text-alignment: center; /* Ensures prompt text alignment */
+    -fx-alignment: center;
+    -fx-text-alignment: center;
 }
 
 .text-field:focused {
@@ -14,20 +14,38 @@
 }
 
 .check-box {
-    -fx-text-fill: black; /* Set text color to black */
+    -fx-text-fill: black;
 }
 
 .check-box .box {
-    -fx-background-color: white; /* Fill color */
-    -fx-border-color: black; /* Border color */
-    -fx-border-width: 2px; /* Border thickness */
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
 }
 
 .check-box:selected .box {
-    -fx-background-color: black; /* Fill color when checked */
-    -fx-border-color: black; /* Keep border color black */
+    -fx-background-color: black;
+    -fx-border-color: black;
 }
 
 .check-box .mark {
-    -fx-background-color: white; /* Checkmark color */
+    -fx-background-color: white;
 }
+
+#btnAdmin,
+#btnReceptionist,
+#btnAdminLogin,
+#btnReceptionistLogin {
+    -fx-background-color: #023e8a;
+    -fx-cursor: hand;
+}
+
+#btnAdmin:hover,
+#btnReceptionist:hover,
+#btnAdminLogin:hover,
+#btnReceptionistLogin:hover {
+    -fx-background-color: black !important;
+}
+
+
+
