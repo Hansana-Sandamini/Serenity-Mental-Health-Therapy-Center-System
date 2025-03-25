@@ -35,8 +35,10 @@ public class ReceptionistLoginFormController {
     private TextField txtReceptionistUserName;
 
     @FXML
-    void btnReceptionistLoginOnAction(ActionEvent event) {
-
+    void btnReceptionistLoginOnAction(ActionEvent event) throws IOException {
+        receptionistLoginPane.getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/ReceptionistDashboardForm.fxml"));
+        receptionistLoginPane.getChildren().add(load);
     }
 
     @FXML
