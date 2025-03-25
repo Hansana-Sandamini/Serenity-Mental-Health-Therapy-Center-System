@@ -42,8 +42,10 @@ public class AdminLoginFormController {
     }
 
     @FXML
-    void btnAdminLoginOnAction(ActionEvent event) {
-
+    void btnAdminLoginOnAction(ActionEvent event) throws IOException {
+        adminLoginPane.getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/AdminDashboardForm.fxml"));
+        adminLoginPane.getChildren().add(load);
     }
 
     @FXML

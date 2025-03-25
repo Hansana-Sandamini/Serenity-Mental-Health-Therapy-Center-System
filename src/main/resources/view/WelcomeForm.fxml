@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="welcomePane" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.hibernate.serenitymentalhealththerapycenter.controller.WelcomeFormController">
+<AnchorPane fx:id="welcomePane" prefHeight="800.0" prefWidth="1300.0" stylesheets="@../assets/styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.hibernate.serenitymentalhealththerapycenter.controller.WelcomeFormController">
    <children>
       <ImageView fitHeight="800.0" fitWidth="1300.0">
          <image>
@@ -19,7 +19,7 @@
             <Font name="DejaVu Serif Bold" size="48.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="selectRolePane" layoutX="942.0" layoutY="209.0" prefHeight="375.0" prefWidth="344.0" style="-fx-background-radius: 20px; -fx-background-color: #84d2f6;">
+      <AnchorPane fx:id="selectRolePane" layoutX="942.0" layoutY="209.0" prefHeight="375.0" prefWidth="344.0" style="-fx-background-radius: 20px; -fx-background-color: #84d2f6;" stylesheets="@../assets/styles/styles.css">
          <children>
             <Label layoutX="54.0" layoutY="38.0" prefHeight="48.0" prefWidth="247.0" text="Select Your Role" textAlignment="CENTER">
                <font>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="adminDashboardPane" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.hibernate.serenitymentalhealththerapycenter.controller.AdminDashboardFormController">
+   <children>
+      <ImageView fitHeight="800.0" fitWidth="1300.0">
+         <image>
+            <Image url="@../assets/images/dashboard-background.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="117.0" layoutY="14.0" prefHeight="93.0" prefWidth="1067.0" text="Serenity Mental Health Therapy Center" textAlignment="CENTER" textFill="#023e8a">
+         <font>
+            <Font name="DejaVu Serif Bold" size="48.0" />
+         </font>
+      </Label>
+      <Group layoutX="177.0" layoutY="274.0" stylesheets="@../assets/styles/styles.css">
+         <children>
+            <FontAwesomeIcon fx:id="therapistIcon" iconName="USER_MD" layoutX="125.0" layoutY="3.71429443359375" onMouseClicked="#therapistIconOnAction" size="5em" text="" styleClass="icon"/>
+            <FontAwesomeIcon fx:id="userIcon" iconName="USER" layoutX="-5.0" layoutY="3.71429443359375" onMouseClicked="#userIconOnAction" size="5em" text="" styleClass="icon"/>
+            <FontAwesomeIcon fx:id="paymentIcon" iconName="CREDIT_CARD" layoutX="719.0" layoutY="1.0" onMouseClicked="#paymentIconOnAction" size="5em" styleClass="icon"/>
+            <FontAwesomeIcon fx:id="reportIcon" iconName="FILE_TEXT" layoutX="867.0" layoutY="2.0" onMouseClicked="#reportIconOnAction" size="5em" text="" wrappingWidth="58.71428680419922" styleClass="icon"/>
+            <FontAwesomeIcon fx:id="therapyProgramIcon" iconName="FOLDER_OPEN" layoutX="421.0" layoutY="5.0" onMouseClicked="#therapyProgramIconOnAction" size="5em" styleClass="icon"/>
+            <FontAwesomeIcon fx:id="patientIcon" iconName="BED" layoutX="263.0" layoutY="6.0" onMouseClicked="#patientIconOnAction" size="5em" styleClass="icon"/>
+            <FontAwesomeIcon fx:id="therapySessionIcon" iconName="CALENDAR" layoutX="577.0" onMouseClicked="#therapySessionIconOnAction" size="5em" styleClass="icon"/>
+         </children>
+      </Group>
+   </children>
+</AnchorPane>
