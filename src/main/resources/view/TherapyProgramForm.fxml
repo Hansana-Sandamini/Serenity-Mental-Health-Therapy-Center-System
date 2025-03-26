@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="therapyProgramPane" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.hibernate.serenitymentalhealththerapycenter.controller.TherapyProgramFormController">
+   <children>
+      <ImageView fitHeight="800.0" fitWidth="1300.0" layoutX="-2.0" layoutY="1.0">
+         <image>
+            <Image url="@../assets/images/page-background.jpg" />
+         </image>
+      </ImageView>
+      <TableView fx:id="tblTherapyPrograms" layoutX="137.0" layoutY="393.0" onMouseClicked="#tblTherapyProgramsOnClicked" prefHeight="368.0" prefWidth="998.0" stylesheets="@../assets/styles/table-styles.css">
+        <columns>
+          <TableColumn fx:id="colProgramID" prefWidth="160.0" text="Program ID" />
+          <TableColumn fx:id="colProgramName" prefWidth="422.0" text="Program Name" />
+            <TableColumn fx:id="colDuration" prefWidth="208.0" text="Duration" />
+            <TableColumn fx:id="colFee" prefWidth="199.0" text="Fee (LKR)" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnAddNewProgram" layoutX="1068.0" layoutY="29.0" mnemonicParsing="false" onAction="#btnAddNewProgramOnAction" prefHeight="42.0" prefWidth="188.0" style="-fx-background-color: #e84393;" text="Add New Program" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Button>
+      <Group layoutX="53.0" layoutY="72.28571319580078" stylesheets="@../assets/styles/styles.css">
+         <children>
+            <FontAwesomeIcon fx:id="homeIcon" iconName="HOME" onMouseClicked="#homeIconOnAction" size="5em" styleClass="icon" />
+         </children>
+      </Group>
+      <Label layoutX="137.0" layoutY="119.0" prefHeight="42.0" prefWidth="130.0" text="Program ID ">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="137.0" layoutY="197.0" prefHeight="42.0" prefWidth="130.0" text="Duration">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="571.0" layoutY="117.0" prefHeight="42.0" prefWidth="148.0" text="Program Name ">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="571.0" layoutY="197.0" prefHeight="42.0" prefWidth="130.0" text="Fee (LKR)">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Group layoutX="261.0" layoutY="119.0" stylesheets="@../assets/styles/styles.css">
+         <children>
+            <TextField prefHeight="42.0" prefWidth="202.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <TextField layoutY="80.0" prefHeight="42.0" prefWidth="205.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <TextField layoutX="460.0" prefHeight="42.0" prefWidth="427.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <TextField layoutX="460.0" layoutY="80.0" prefHeight="42.0" prefWidth="293.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+         </children>
+      </Group>
+      <Button fx:id="btnSave" layoutX="136.0" layoutY="300.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="40.0" prefWidth="169.0" style="-fx-background-color: #02c39a; -fx-background-radius: 10px;" text="  SAVE" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <FontAwesomeIcon fill="WHITE" iconName="SAVE" layoutX="157.0" layoutY="329.0" size="2em" />
+      <Button fx:id="btnRefresh" layoutX="404.0" layoutY="301.0" mnemonicParsing="false" onAction="#btnRefreshOnAction" prefHeight="40.0" prefWidth="169.0" style="-fx-background-color: #a9927d; -fx-background-radius: 10;" text="      REFRESH" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <FontAwesomeIcon fill="WHITE" iconName="REFRESH" layoutX="425.0" layoutY="330.0" size="2em" />
+      <Button fx:id="btnUpdate" layoutX="684.0" layoutY="301.0" mnemonicParsing="false" onAction="#btnUpdateOnAction" prefHeight="40.0" prefWidth="169.0" style="-fx-background-color: #415a77; -fx-background-radius: 10;" text="      UPDATE" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <FontAwesomeIcon fill="WHITE" iconName="WRENCH" layoutX="705.0" layoutY="330.0" size="2em" />
+      <Button fx:id="btnDelete" layoutX="964.0" layoutY="301.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="40.0" prefWidth="169.0" style="-fx-background-color: #dd2d4a; -fx-background-radius: 10;" text="      DELETE" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <FontAwesomeIcon fill="WHITE" iconName="TRASH" layoutX="985.0" layoutY="330.0" size="2em" />
+   </children>
+</AnchorPane>

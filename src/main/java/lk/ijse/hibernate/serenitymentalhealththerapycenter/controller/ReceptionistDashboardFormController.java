@@ -8,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 public class ReceptionistDashboardFormController {
 
     @FXML
-    private AnchorPane adminDashboardPane;
+    private AnchorPane receptionistDashboardPane;
 
     @FXML
     private FontAwesomeIcon patientIcon;
