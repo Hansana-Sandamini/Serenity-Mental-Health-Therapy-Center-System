@@ -4,16 +4,17 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class TherapyProgramFormController {
+public class TherapistFormController {
 
     @FXML
-    private Button btnAddNewProgram;
+    private Button btnAddNewTherapist;
 
     @FXML
     private Button btnDelete;
@@ -28,40 +29,55 @@ public class TherapyProgramFormController {
     private Button btnUpdate;
 
     @FXML
-    private TableColumn<?, ?> colDuration;
+    private ComboBox<?> cmbAvailabilityStatus;
 
     @FXML
-    private TableColumn<?, ?> colFee;
+    private ComboBox<?> cmbSpecialization;
 
     @FXML
-    private TableColumn<?, ?> colProgramID;
+    private ComboBox<?> cmbTitle;
 
     @FXML
-    private TableColumn<?, ?> colProgramName;
+    private TableColumn<?, ?> colAvailabilityStatus;
+
+    @FXML
+    private TableColumn<?, ?> colContactNumber;
+
+    @FXML
+    private TableColumn<?, ?> colEmail;
+
+    @FXML
+    private TableColumn<?, ?> colName;
+
+    @FXML
+    private TableColumn<?, ?> colSpecialization;
+
+    @FXML
+    private TableColumn<?, ?> colTherapistID;
 
     @FXML
     private FontAwesomeIcon homeIcon;
 
     @FXML
-    private TableView<?> tblTherapyPrograms;
+    private TableView<?> tblTherapists;
 
     @FXML
-    private AnchorPane therapyProgramPane;
+    private AnchorPane therapistPane;
 
     @FXML
-    private TextField txtDuration;
+    private TextField txtContactNumber;
 
     @FXML
-    private TextField txtFee;
+    private TextField txtEmail;
 
     @FXML
-    private TextField txtProgramID;
+    private TextField txtName;
 
     @FXML
-    private TextField txtProgramName;
+    private TextField txtTherapistID;
 
     @FXML
-    void btnAddNewProgramOnAction(ActionEvent event) {
+    void btnAddNewTherapistOnAction(ActionEvent event) {
 
     }
 
@@ -86,12 +102,27 @@ public class TherapyProgramFormController {
     }
 
     @FXML
+    void cmbAvailabilityStatusOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void cmbSpecializationOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void cmbTitleOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
     void homeIconOnAction(MouseEvent event) {
 
     }
 
     @FXML
-    void tblTherapyProgramsOnClicked(MouseEvent event) {
+    void tblTherapistsOnClicked(MouseEvent event) {
 
     }
 

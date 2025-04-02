@@ -62,7 +62,7 @@ public class AdminDashboardFormController {
 
     @FXML
     void therapistIconOnAction(MouseEvent event) {
-
+        navigateTo("/view/TherapistForm.fxml");
     }
 
     @FXML
@@ -81,4 +81,3 @@ public class AdminDashboardFormController {
     }
 
 }
-

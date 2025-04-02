@@ -59,22 +59,22 @@
       </Label>
       <Group layoutX="261.0" layoutY="119.0" stylesheets="@../assets/styles/styles.css">
          <children>
-            <TextField prefHeight="42.0" prefWidth="202.0">
+            <TextField fx:id="txtProgramID" prefHeight="42.0" prefWidth="202.0">
                <font>
                   <Font size="15.0" />
                </font>
             </TextField>
-            <TextField layoutY="80.0" prefHeight="42.0" prefWidth="205.0">
+            <TextField fx:id="txtDuration" layoutY="80.0" prefHeight="42.0" prefWidth="205.0">
                <font>
                   <Font size="15.0" />
                </font>
             </TextField>
-            <TextField layoutX="460.0" prefHeight="42.0" prefWidth="427.0">
+            <TextField fx:id="txtProgramName" layoutX="460.0" prefHeight="42.0" prefWidth="427.0">
                <font>
                   <Font size="15.0" />
                </font>
             </TextField>
-            <TextField layoutX="460.0" layoutY="80.0" prefHeight="42.0" prefWidth="293.0">
+            <TextField fx:id="txtFee" layoutX="460.0" layoutY="80.0" prefHeight="42.0" prefWidth="293.0">
                <font>
                   <Font size="15.0" />
                </font>
