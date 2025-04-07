@@ -47,7 +47,7 @@ public class AdminDashboardFormController {
 
     @FXML
     void patientIconOnAction(MouseEvent event) {
-
+        navigateTo("/view/PatientForm.fxml");
     }
 
     @FXML
