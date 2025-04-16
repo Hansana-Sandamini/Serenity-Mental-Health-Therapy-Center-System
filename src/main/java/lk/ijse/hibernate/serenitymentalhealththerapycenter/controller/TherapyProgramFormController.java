@@ -3,12 +3,12 @@ package lk.ijse.hibernate.serenitymentalhealththerapycenter.controller;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
 
 public class TherapyProgramFormController {
 
@@ -85,9 +85,19 @@ public class TherapyProgramFormController {
 
     }
 
+    public void navigateToHome(String fxmlPath) {
+        try {
+            therapyProgramPane.getChildren().clear();
+            AnchorPane load = FXMLLoader.load(getClass().getResource(fxmlPath));
+            therapyProgramPane.getChildren().add(load);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Fail to load page...!").show();
+        }
+    }
+
     @FXML
     void homeIconOnAction(MouseEvent event) {
-
+        navigateToHome("/view/AdminDashboardForm.fxml");
     }
 
     @FXML
