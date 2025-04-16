@@ -46,7 +46,7 @@ public class ReceptionistDashboardFormController {
 
     @FXML
     void paymentIconOnAction(MouseEvent event) {
-
+        navigateTo("/view/PaymentForm.fxml");
     }
 
     @FXML
