@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="therapySessionPane" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.hibernate.serenitymentalhealththerapycenter.controller.TherapySessionFormController">
+   <children>
+      <ImageView fitHeight="800.0" fitWidth="1300.0" layoutX="-2.0" layoutY="1.0">
+         <image>
+            <Image url="@../assets/images/page-background.jpg" />
+         </image>
+      </ImageView>
+      <TableView fx:id="tblSessions" layoutX="69.0" layoutY="393.0" onMouseClicked="#tblSessionsOnClicked" prefHeight="368.0" prefWidth="1162.0" stylesheets="@../assets/styles/table-styles.css">
+         <columns>
+            <TableColumn fx:id="colSessionID" prefWidth="152.0" text="Session ID" />
+            <TableColumn fx:id="colProgramID" prefWidth="165.0" text="Program ID" />
+            <TableColumn fx:id="colPatientID" prefWidth="166.0" text="Patient ID" />
+            <TableColumn fx:id="colTherapistID" prefWidth="161.0" text="Therapist ID" />
+            <TableColumn fx:id="colDate" prefWidth="154.0" text="Date" />
+            <TableColumn fx:id="colTime" prefWidth="190.0" text="Time" />
+            <TableColumn fx:id="colStatus" prefWidth="167.0" text="Status" />
+         </columns>
+      </TableView>
+      <Button fx:id="btnAddNewSession" layoutX="1054.0" layoutY="29.0" mnemonicParsing="false" onAction="#btnAddNewSessionOnAction" prefHeight="42.0" prefWidth="202.0" style="-fx-background-color: #e84393;" text="Add New Session" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Button>
+      <Group layoutX="53.0" layoutY="72.28571319580078" stylesheets="@../assets/styles/styles.css">
+         <children>
+            <FontAwesomeIcon fx:id="homeIcon" iconName="HOME" onMouseClicked="#homeIconOnAction" size="5em" styleClass="icon" />
+         </children>
+      </Group>
+      <Label layoutX="159.0" layoutY="119.0" prefHeight="42.0" prefWidth="130.0" text="Session ID ">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="107.0" layoutY="246.0" prefHeight="42.0" prefWidth="117.0" text="Date">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="661.0" layoutY="117.0" prefHeight="42.0" prefWidth="117.0" text="Program ID">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Group layoutX="254.0" layoutY="119.0" stylesheets="@../assets/styles/styles.css">
+         <children>
+            <TextField fx:id="txtSessionID" layoutX="40.0" layoutY="-3.0" prefHeight="42.0" prefWidth="240.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <ComboBox fx:id="cmbTherapistID" layoutX="538.0" layoutY="57.0" onAction="#cmbTherapistIDOnAction" prefHeight="45.0" prefWidth="275.0" promptText="Select" />
+            <ComboBox fx:id="cmbProgramID" layoutX="538.0" layoutY="-3.0" onAction="#cmbProgramIDOnAction" prefHeight="45.0" prefWidth="272.0" promptText="Select" />
+            <ComboBox fx:id="cmbStatus" layoutX="727.0" layoutY="127.0" onAction="#cmbStatusOnAction" prefHeight="45.0" prefWidth="217.0" promptText="Select" />
+            <ComboBox fx:id="cmbPatientID" layoutX="38.0" layoutY="57.0" onAction="#cmbPatientIDOnAction" prefHeight="45.0" prefWidth="242.0" promptText="Select" />
+            <DatePicker fx:id="txtDate" layoutX="-86.0" layoutY="123.0" prefHeight="47.0" prefWidth="204.0" />
+            <TextField fx:id="txtTime" layoutX="274.0" layoutY="128.0" prefHeight="42.0" prefWidth="195.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <ComboBox fx:id="cmbTimeAmPm" layoutX="472.0" layoutY="126.0" onAction="#cmbTimeAmPmOnAction" prefHeight="45.0" prefWidth="93.0" promptText="am/pm" />
+         </children>
+      </Group>
+      <Button fx:id="btnSave" layoutX="106.0" layoutY="320.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="40.0" prefWidth="169.0" style="-fx-background-color: #02c39a; -fx-background-radius: 10px;" text="  SAVE" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <FontAwesomeIcon fill="WHITE" iconName="SAVE" layoutX="127.0" layoutY="349.0" size="2em" />
+      <Button fx:id="btnRefresh" layoutX="392.0" layoutY="321.0" mnemonicParsing="false" onAction="#btnRefreshOnAction" prefHeight="40.0" prefWidth="169.0" style="-fx-background-color: #a9927d; -fx-background-radius: 10;" text="      REFRESH" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <FontAwesomeIcon fill="WHITE" iconName="REFRESH" layoutX="413.0" layoutY="350.0" size="2em" />
+      <Button fx:id="btnUpdate" layoutX="721.0" layoutY="321.0" mnemonicParsing="false" onAction="#btnUpdateOnAction" prefHeight="40.0" prefWidth="169.0" style="-fx-background-color: #415a77; -fx-background-radius: 10;" text="      UPDATE" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <FontAwesomeIcon fill="WHITE" iconName="WRENCH" layoutX="742.0" layoutY="350.0" size="2em" />
+      <Button fx:id="btnDelete" layoutX="1014.0" layoutY="321.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="40.0" prefWidth="169.0" style="-fx-background-color: #dd2d4a; -fx-background-radius: 10;" text="      DELETE" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <FontAwesomeIcon fill="WHITE" iconName="TRASH" layoutX="1035.0" layoutY="350.0" size="2em" />
+      <Label layoutX="475.0" layoutY="246.0" prefHeight="42.0" prefWidth="71.0" text="Time">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="662.0" layoutY="180.0" prefHeight="42.0" prefWidth="117.0" text="Therapist ID">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="157.0" layoutY="181.0" prefHeight="42.0" prefWidth="130.0" text="Patient ID">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="914.0" layoutY="246.0" prefHeight="42.0" prefWidth="71.0" text="Status">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

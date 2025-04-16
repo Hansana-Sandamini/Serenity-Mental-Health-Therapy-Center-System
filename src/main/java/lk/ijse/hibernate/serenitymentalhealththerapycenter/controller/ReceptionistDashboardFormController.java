@@ -56,7 +56,7 @@ public class ReceptionistDashboardFormController {
 
     @FXML
     void therapySessionIconOnAction(MouseEvent event) {
-
+        navigateTo("/view/TherapySessionForm.fxml");
     }
 
     @FXML
