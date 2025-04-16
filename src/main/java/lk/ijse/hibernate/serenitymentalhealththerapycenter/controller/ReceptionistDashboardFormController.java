@@ -61,7 +61,7 @@ public class ReceptionistDashboardFormController {
 
     @FXML
     void userIconOnAction(MouseEvent event) {
-
+        navigateTo("/view/UserForm.fxml");
     }
 
 }

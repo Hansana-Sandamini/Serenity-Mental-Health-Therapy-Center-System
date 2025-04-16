@@ -77,7 +77,7 @@ public class AdminDashboardFormController {
 
     @FXML
     void userIconOnAction(MouseEvent event) {
-
+        navigateTo("/view/UserForm.fxml");
     }
 
 }
