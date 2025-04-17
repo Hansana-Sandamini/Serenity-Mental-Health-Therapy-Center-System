@@ -30,6 +30,9 @@ public class PaymentFormController {
     private Button btnUpdate;
 
     @FXML
+    private Button btnViewInvoice;
+
+    @FXML
     private ComboBox<?> cmbPatientID;
 
     @FXML
@@ -123,6 +126,11 @@ public class PaymentFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnViewInvoiceOnAction(ActionEvent event) {
 
     }
 

@@ -46,7 +46,7 @@ public class UserFormController {
     private TableColumn<?, ?> colPassword;
 
     @FXML
-    private TableColumn<?, ?> colRegistrationDate;
+    private TableColumn<?, ?> colEmail;
 
     @FXML
     private TableColumn<?, ?> colRole;
