@@ -10,7 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class PatientDTO {
-    private String patientID;
+    private String patientId;
     private String name;
     private String contactNumber;
     private String email;

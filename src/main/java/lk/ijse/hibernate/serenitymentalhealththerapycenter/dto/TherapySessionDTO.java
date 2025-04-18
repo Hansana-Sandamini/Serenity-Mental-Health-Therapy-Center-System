@@ -10,10 +10,10 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class TherapySessionDTO {
-    private String sessionID;
-    private String programID;
-    private String patientID;
-    private String therapistID;
+    private String sessionId;
+    private String programId;
+    private String patientId;
+    private String therapistId;
     private Date date;
     private String time;
     private String status;

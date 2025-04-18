@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class TherapistDTO {
-    private String therapistID;
+    private String therapistId;
     private String name;
     private String contactNumber;
     private String email;

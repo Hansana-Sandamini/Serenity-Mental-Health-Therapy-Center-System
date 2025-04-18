@@ -2,6 +2,7 @@ package lk.ijse.hibernate.serenitymentalhealththerapycenter.dto;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -10,13 +11,13 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class PaymentDTO {
-    private String paymentID;
-    private String patientID;
-    private String programID;
-    private String sessionID;
-    private Double amount;
-    private Double amountPaid;
-    private Double amountToPay;
+    private String paymentId;
+    private String patientId;
+    private String programId;
+    private String sessionId;
+    private BigDecimal amount;
+    private BigDecimal amountPaid;
+    private BigDecimal amountToPay;
     private Date date;
     private String time;
     private String status;
