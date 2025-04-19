@@ -4,6 +4,7 @@ module lk.ijse.hibernate.serenitymentalhealththerapycenter {
     requires fontawesomefx;
     requires static lombok;
     requires jakarta.persistence;
+    requires org.hibernate.orm.core;
 
 
     opens lk.ijse.hibernate.serenitymentalhealththerapycenter.controller to javafx.fxml;
