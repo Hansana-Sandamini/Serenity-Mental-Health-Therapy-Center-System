@@ -12,4 +12,5 @@ public interface CrudDAO<T extends SuperEntity, ID> extends SuperDAO {
     public List<T> getAll() throws Exception;
     List<ID> loadAllIDs() throws Exception;
     ID getLastID() throws Exception;
+    public String generateNewId() throws Exception;
 }
