@@ -2,6 +2,7 @@ package lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -14,7 +15,7 @@ public class TherapySessionTM {
     private String programId;
     private String patientId;
     private String therapistId;
-    private Date date;
+    private LocalDate date;
     private String time;
     private String status;
 }

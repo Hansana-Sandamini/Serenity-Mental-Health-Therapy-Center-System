@@ -1,18 +1,32 @@
 package lk.ijse.hibernate.serenitymentalhealththerapycenter.controller;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.BOFactory;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.PatientBO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.PatientDTO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.PatientTM;
 
-public class PatientFormController {
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class PatientFormController implements Initializable {
 
     @FXML
     private Button btnAddNewPatient;
@@ -30,25 +44,25 @@ public class PatientFormController {
     private Button btnUpdate;
 
     @FXML
-    private ComboBox<?> cmbTitle;
+    private ComboBox<String> cmbTitle;
 
     @FXML
-    private TableColumn<?, ?> colAge;
+    private TableColumn<PatientTM, Integer> colAge;
 
     @FXML
-    private TableColumn<?, ?> colContactNumber;
+    private TableColumn<PatientTM, String> colContactNumber;
 
     @FXML
-    private TableColumn<?, ?> colEmail;
+    private TableColumn<PatientTM, String> colEmail;
 
     @FXML
-    private TableColumn<?, ?> colName;
+    private TableColumn<PatientTM, String> colName;
 
     @FXML
-    private TableColumn<?, ?> colPatientID;
+    private TableColumn<PatientTM, String> colPatientID;
 
     @FXML
-    private TableColumn<?, ?> colRegistrationDate;
+    private TableColumn<PatientTM, Date> colRegistrationDate;
 
     @FXML
     private FontAwesomeIcon homeIcon;
@@ -57,7 +71,7 @@ public class PatientFormController {
     private AnchorPane patientPane;
 
     @FXML
-    private TableView<?> tblPatients;
+    private TableView<PatientTM> tblPatients;
 
     @FXML
     private TextField txtAge;
@@ -76,6 +90,8 @@ public class PatientFormController {
 
     @FXML
     private DatePicker txtRegistrationDate;
+
+    PatientBO patientBO = (PatientBO) BOFactory.getInstance().getBO(BOFactory.BOType.PATIENT);
 
     @FXML
     void btnAddNewPatientOnAction(ActionEvent event) {
@@ -117,4 +133,49 @@ public class PatientFormController {
 
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        colPatientID.setCellValueFactory(new PropertyValueFactory<>("patientId"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colContactNumber.setCellValueFactory(new PropertyValueFactory<>("contactNumber"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        colRegistrationDate.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
+
+        try {
+            refreshPage();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void refreshPage() throws Exception {
+        refreshTable();
+
+        txtPatientID.setText(patientBO.getNextPatientId());
+        txtName.setText("");
+        txtName.setText("");
+        txtContactNumber.setText("");
+        txtEmail.setText("");
+        txtAge.setText("");
+        txtRegistrationDate.setValue(LocalDate.now());
+    }
+
+    private void refreshTable() throws Exception {
+        List<PatientDTO> patientDTOS = patientBO.getAllPatients();
+        ObservableList<PatientTM> patientTMS = FXCollections.observableArrayList();
+
+        for (PatientDTO patientDTO : patientDTOS) {
+            PatientTM patientTM = new PatientTM(
+                    patientDTO.getPatientId(),
+                    patientDTO.getName(),
+                    patientDTO.getContactNumber(),
+                    patientDTO.getEmail(),
+                    patientDTO.getAge(),
+                    patientDTO.getRegistrationDate()
+            );
+            patientTMS.add(patientTM);
+        }
+        tblPatients.setItems(patientTMS);
+    }
 }

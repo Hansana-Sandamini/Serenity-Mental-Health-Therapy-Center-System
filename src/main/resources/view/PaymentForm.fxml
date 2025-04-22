@@ -62,25 +62,25 @@
       </Label>
       <Group layoutX="164.0" layoutY="106.0" stylesheets="@../assets/styles/styles.css">
          <children>
-            <TextField fx:id="txtSessionID" layoutX="12.0" prefHeight="42.0" prefWidth="131.0">
+            <TextField fx:id="txtPaymentID" layoutX="12.0" prefHeight="42.0" prefWidth="131.0">
                <font>
                   <Font size="15.0" />
                </font>
             </TextField>
-            <ComboBox fx:id="cmbTherapistID" layoutX="928.0" onAction="#cmbTherapistIDOnAction" prefHeight="45.0" prefWidth="137.0" promptText="Select" />
-            <ComboBox fx:id="cmbProgramID" layoutX="299.0" onAction="#cmbProgramIDOnAction" prefHeight="45.0" prefWidth="143.0" promptText="Select" />
-            <ComboBox fx:id="cmbPatientID" layoutX="627.0" onAction="#cmbPatientIDOnAction" prefHeight="45.0" prefWidth="143.0" promptText="Select" />
-            <TextField fx:id="txtSessionID1" layoutX="-6.0" layoutY="72.0" prefHeight="42.0" prefWidth="195.0">
+            <ComboBox fx:id="cmbSessionID" layoutX="928.0" onAction="#cmbSessionIDOnAction" prefHeight="45.0" prefWidth="137.0" promptText="Select" />
+            <ComboBox fx:id="cmbPatientID" layoutX="299.0" onAction="#cmbPatientIDOnAction" prefHeight="45.0" prefWidth="143.0" promptText="Select" />
+            <ComboBox fx:id="cmbProgramID" layoutX="627.0" onAction="#cmbProgramIDOnAction" prefHeight="45.0" prefWidth="143.0" promptText="Select" />
+            <TextField fx:id="txtAmount" layoutX="-6.0" layoutY="72.0" prefHeight="42.0" prefWidth="195.0">
                <font>
                   <Font size="15.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtSessionID11" layoutX="372.0" layoutY="72.0" prefHeight="42.0" prefWidth="210.0">
+            <TextField fx:id="txtAmountPaid" layoutX="372.0" layoutY="72.0" prefHeight="42.0" prefWidth="210.0">
                <font>
                   <Font size="15.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtSessionID111" layoutX="818.0" layoutY="72.0" prefHeight="42.0" prefWidth="241.0">
+            <TextField fx:id="txtAmountToPay" layoutX="818.0" layoutY="72.0" prefHeight="42.0" prefWidth="241.0">
                <font>
                   <Font size="15.0" />
                </font>

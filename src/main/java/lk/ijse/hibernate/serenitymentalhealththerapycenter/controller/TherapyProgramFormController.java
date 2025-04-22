@@ -1,16 +1,28 @@
 package lk.ijse.hibernate.serenitymentalhealththerapycenter.controller;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.BOFactory;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.TherapyProgramBO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.TherapyProgramDTO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.TherapyProgramTM;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 
-public class TherapyProgramFormController {
+public class TherapyProgramFormController implements Initializable {
 
     @FXML
     private Button btnAddNewProgram;
@@ -28,22 +40,22 @@ public class TherapyProgramFormController {
     private Button btnUpdate;
 
     @FXML
-    private TableColumn<?, ?> colDuration;
+    private TableColumn<TherapyProgramTM, String> colDuration;
 
     @FXML
-    private TableColumn<?, ?> colFee;
+    private TableColumn<TherapyProgramTM, BigDecimal> colFee;
 
     @FXML
-    private TableColumn<?, ?> colProgramID;
+    private TableColumn<TherapyProgramTM, String> colProgramID;
 
     @FXML
-    private TableColumn<?, ?> colProgramName;
+    private TableColumn<TherapyProgramTM, String> colProgramName;
 
     @FXML
     private FontAwesomeIcon homeIcon;
 
     @FXML
-    private TableView<?> tblTherapyPrograms;
+    private TableView<TherapyProgramTM> tblTherapyPrograms;
 
     @FXML
     private AnchorPane therapyProgramPane;
@@ -59,6 +71,8 @@ public class TherapyProgramFormController {
 
     @FXML
     private TextField txtProgramName;
+
+    TherapyProgramBO programBO = (TherapyProgramBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPY_PROGRAM);
 
     @FXML
     void btnAddNewProgramOnAction(ActionEvent event) {
@@ -105,4 +119,42 @@ public class TherapyProgramFormController {
 
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        colProgramID.setCellValueFactory(new PropertyValueFactory<>("programId"));
+        colProgramName.setCellValueFactory(new PropertyValueFactory<>("programName"));
+        colDuration.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        colFee.setCellValueFactory(new PropertyValueFactory<>("fee"));
+
+        try {
+            refreshPage();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void refreshPage() throws Exception {
+        refreshTable();
+
+        txtProgramID.setText(programBO.getNextTherapyProgramId());
+        txtProgramName.setText("");
+        txtDuration.setText("");
+        txtFee.setText("");
+    }
+
+    private void refreshTable() throws Exception {
+        List<TherapyProgramDTO> programDTOS = programBO.getAllTherapyPrograms();
+        ObservableList<TherapyProgramTM> programTMS = FXCollections.observableArrayList();
+
+        for (TherapyProgramDTO programDTO : programDTOS) {
+            TherapyProgramTM programTM = new TherapyProgramTM(
+                    programDTO.getProgramId(),
+                    programDTO.getProgramName(),
+                    programDTO.getDuration(),
+                    programDTO.getFee()
+            );
+            programTMS.add(programTM);
+        }
+        tblTherapyPrograms.setItems(programTMS);
+    }
 }

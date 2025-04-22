@@ -1,19 +1,31 @@
 package lk.ijse.hibernate.serenitymentalhealththerapycenter.controller;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.BOFactory;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.UserBO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.UserDTO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.UserTM;
 
-public class UserFormController {
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class UserFormController implements Initializable {
 
     @FXML
     private Button btnAddNewUser;
@@ -34,31 +46,31 @@ public class UserFormController {
     private CheckBox checkShow;
 
     @FXML
-    private ComboBox<?> cmbRole;
+    private ComboBox<String> cmbRole;
 
     @FXML
-    private TableColumn<?, ?> colContactNumber;
+    private TableColumn<UserTM, String> colContactNumber;
 
     @FXML
-    private TableColumn<?, ?> colName;
+    private TableColumn<UserTM, String> colName;
 
     @FXML
-    private TableColumn<?, ?> colPassword;
+    private TableColumn<UserTM, String> colPassword;
 
     @FXML
-    private TableColumn<?, ?> colEmail;
+    private TableColumn<UserTM, String> colEmail;
 
     @FXML
-    private TableColumn<?, ?> colRole;
+    private TableColumn<UserTM, String> colRole;
 
     @FXML
-    private TableColumn<?, ?> colUsername;
+    private TableColumn<UserTM, String> colUsername;
 
     @FXML
     private FontAwesomeIcon homeIcon;
 
     @FXML
-    private TableView<?> tblUsers;
+    private TableView<UserTM> tblUsers;
 
     @FXML
     private TextField txtContactNumber;
@@ -77,6 +89,8 @@ public class UserFormController {
 
     @FXML
     private AnchorPane userPane;
+
+    UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOType.USER);
 
     @FXML
     void btnAddNewUserOnAction(ActionEvent event) {
@@ -128,4 +142,48 @@ public class UserFormController {
 
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        colUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+        colPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colRole.setCellValueFactory(new PropertyValueFactory<>("role"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colContactNumber.setCellValueFactory(new PropertyValueFactory<>("contactNumber"));
+
+        try {
+            refreshPage();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void refreshPage() throws Exception {
+        refreshTable();
+
+        txtUsername.setText("");
+        txtPassword.setText("");
+        txtName.setText("");
+        cmbRole.setValue("");
+        txtEmail.setText("");
+        txtContactNumber.setText("");
+    }
+
+    private void refreshTable() throws Exception {
+        List<UserDTO> userDTOS = userBO.getAllUsers();
+        ObservableList<UserTM> userTMS = FXCollections.observableArrayList();
+
+        for (UserDTO userDTO : userDTOS) {
+            UserTM userTM = new UserTM(
+                    userDTO.getUsername(),
+                    userDTO.getPassword(),
+                    userDTO.getName(),
+                    userDTO.getRole(),
+                    userDTO.getEmail(),
+                    userDTO.getContactNumber()
+            );
+            userTMS.add(userTM);
+        }
+        tblUsers.setItems(userTMS);
+    }
 }

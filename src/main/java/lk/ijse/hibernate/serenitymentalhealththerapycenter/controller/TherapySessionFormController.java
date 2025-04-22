@@ -1,18 +1,32 @@
 package lk.ijse.hibernate.serenitymentalhealththerapycenter.controller;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.BOFactory;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.TherapySessionBO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.TherapySessionDTO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.TherapySessionTM;
 
-public class TherapySessionFormController {
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class TherapySessionFormController implements Initializable {
 
     @FXML
     private Button btnAddNewSession;
@@ -30,46 +44,46 @@ public class TherapySessionFormController {
     private Button btnUpdate;
 
     @FXML
-    private ComboBox<?> cmbPatientID;
+    private ComboBox<String> cmbPatientID;
 
     @FXML
-    private ComboBox<?> cmbProgramID;
+    private ComboBox<String> cmbProgramID;
 
     @FXML
-    private ComboBox<?> cmbStatus;
+    private ComboBox<String> cmbStatus;
 
     @FXML
-    private ComboBox<?> cmbTherapistID;
+    private ComboBox<String> cmbTherapistID;
 
     @FXML
-    private ComboBox<?> cmbTimeAmPm;
+    private ComboBox<String> cmbTimeAmPm;
 
     @FXML
-    private TableColumn<?, ?> colDate;
+    private TableColumn<TherapySessionTM, Date> colDate;
 
     @FXML
-    private TableColumn<?, ?> colPatientID;
+    private TableColumn<TherapySessionTM, String> colPatientID;
 
     @FXML
-    private TableColumn<?, ?> colProgramID;
+    private TableColumn<TherapySessionTM, String> colProgramID;
 
     @FXML
-    private TableColumn<?, ?> colSessionID;
+    private TableColumn<TherapySessionTM, String> colSessionID;
 
     @FXML
-    private TableColumn<?, ?> colStatus;
+    private TableColumn<TherapySessionTM, String> colStatus;
 
     @FXML
-    private TableColumn<?, ?> colTherapistID;
+    private TableColumn<TherapySessionTM, String> colTherapistID;
 
     @FXML
-    private TableColumn<?, ?> colTime;
+    private TableColumn<TherapySessionTM, String> colTime;
 
     @FXML
     private FontAwesomeIcon homeIcon;
 
     @FXML
-    private TableView<?> tblSessions;
+    private TableView<TherapySessionTM> tblSessions;
 
     @FXML
     private AnchorPane therapySessionPane;
@@ -82,6 +96,8 @@ public class TherapySessionFormController {
 
     @FXML
     private TextField txtTime;
+
+    TherapySessionBO sessionBO = (TherapySessionBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPY_SESSION);
 
     @FXML
     void btnAddNewSessionOnAction(ActionEvent event) {
@@ -143,5 +159,53 @@ public class TherapySessionFormController {
 
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        colSessionID.setCellValueFactory(new PropertyValueFactory<>("sessionId"));
+        colProgramID.setCellValueFactory(new PropertyValueFactory<>("programId"));
+        colPatientID.setCellValueFactory(new PropertyValueFactory<>("patientId"));
+        colTherapistID.setCellValueFactory(new PropertyValueFactory<>("therapistId"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        colTime.setCellValueFactory(new PropertyValueFactory<>("time"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        try {
+            refreshPage();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void refreshPage() throws Exception {
+        refreshTable();
+
+        txtSessionID.setText(sessionBO.getNextTherapySessionId());
+        cmbProgramID.setValue("");
+        cmbPatientID.setValue("");
+        cmbTherapistID.setValue("");
+        txtDate.setValue(LocalDate.now());
+        cmbTimeAmPm.setValue("");
+        txtTime.setText("");
+        cmbStatus.setValue("");
+    }
+
+    private void refreshTable() throws Exception {
+        List<TherapySessionDTO> sessionDTOS = sessionBO.getAllTherapySessions();
+        ObservableList<TherapySessionTM> sessionTMS = FXCollections.observableArrayList();
+
+        for (TherapySessionDTO sessionDTO : sessionDTOS) {
+            TherapySessionTM sessionTM = new TherapySessionTM(
+                    sessionDTO.getSessionId(),
+                    sessionDTO.getProgramId(),
+                    sessionDTO.getPatientId(),
+                    sessionDTO.getTherapistId(),
+                    sessionDTO.getDate(),
+                    sessionDTO.getTime(),
+                    sessionDTO.getStatus()
+            );
+            sessionTMS.add(sessionTM);
+        }
+        tblSessions.setItems(sessionTMS);
+    }
 }
 
