@@ -18,11 +18,14 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.BOFactory;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.PaymentBO;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.PaymentDTO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.util.ValidationUtil;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.PaymentTM;
 
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -187,6 +190,30 @@ public class PaymentFormController implements Initializable {
     @FXML
     void tblPaymentsOnClicked(MouseEvent event) {
 
+    }
+
+    PaymentDTO getTextFieldsValues() {
+        String paymentId = txtPaymentID.getText();
+        String patientId = cmbPatientID.getValue();
+        String programId = cmbProgramID.getValue();
+        String sessionId = cmbSessionID.getValue();
+        BigDecimal amount = new BigDecimal(txtAmount.getText());
+        BigDecimal amountPaid = new BigDecimal(txtAmountPaid.getText());
+        BigDecimal amountToPay = new BigDecimal(txtAmountToPay.getText());
+        Date date = java.sql.Date.valueOf(LocalDate.now());
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        String status = cmbStatus.getValue();
+
+        return new PaymentDTO(paymentId, patientId, programId, sessionId, amount, amountPaid, amountToPay, date, time, status);
+    }
+
+    boolean validateTextFields() {
+        boolean isValidAmount = ValidationUtil.isValidAmount(txtAmount);
+        boolean isValidAmountPaid = ValidationUtil.isValidAmount(txtAmountPaid);
+        boolean isValidAmountToPay = ValidationUtil.isValidAmount(txtAmountToPay);
+        boolean isValidTime = ValidationUtil.isValidTime(txtTime);
+
+        return isValidAmount && isValidAmountPaid && isValidAmountToPay && isValidTime;
     }
 
     @Override

@@ -18,10 +18,13 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.BOFactory;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.TherapySessionBO;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.TherapySessionDTO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.util.ValidationUtil;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.TherapySessionTM;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -157,6 +160,24 @@ public class TherapySessionFormController implements Initializable {
     @FXML
     void tblSessionsOnClicked(MouseEvent event) {
 
+    }
+
+    TherapySessionDTO getTextFieldsValues() {
+        String sessionId = txtSessionID.getText();
+        String programId = cmbProgramID.getValue();
+        String patientId = cmbPatientID.getValue();
+        String therapistId = cmbTherapistID.getValue();
+        LocalDate date = txtDate.getValue();
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        String status = cmbStatus.getValue();
+
+        return new TherapySessionDTO(sessionId, programId, patientId, therapistId, date, time, status);
+    }
+
+    boolean validateTextFields() {
+        boolean isValidTime = ValidationUtil.isValidTime(txtTime);
+
+        return isValidTime;
     }
 
     @Override

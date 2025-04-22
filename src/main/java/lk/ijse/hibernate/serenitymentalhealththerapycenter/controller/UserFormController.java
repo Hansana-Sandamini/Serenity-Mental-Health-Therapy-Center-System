@@ -19,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.BOFactory;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.UserBO;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.UserDTO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.util.ValidationUtil;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.UserTM;
 
 import java.net.URL;
@@ -140,6 +141,25 @@ public class UserFormController implements Initializable {
     @FXML
     void txtPasswordOnKeyReleased(KeyEvent event) {
 
+    }
+
+    UserDTO getTextFieldsValues() {
+        String username = txtUsername.getText();
+        String password = txtPassword.getText();
+        String name = txtName.getText();
+        String role = cmbRole.getValue();
+        String email = txtEmail.getText();
+        String contactNumber = txtContactNumber.getText();
+
+        return new UserDTO(username, password, name, role, email, contactNumber);
+    }
+
+    boolean validateTextFields() {
+        boolean isValidName = ValidationUtil.isValidName(txtName);
+        boolean isValidEmail = ValidationUtil.isValidEmail(txtEmail);
+        boolean isValidContactNumber = ValidationUtil.isValidContactNumber(txtContactNumber);
+
+        return isValidName && isValidEmail && isValidContactNumber;
     }
 
     @Override

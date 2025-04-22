@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.BOFactory;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.TherapyProgramBO;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.TherapyProgramDTO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.util.ValidationUtil;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.TherapyProgramTM;
 
 import java.io.IOException;
@@ -117,6 +118,21 @@ public class TherapyProgramFormController implements Initializable {
     @FXML
     void tblTherapyProgramsOnClicked(MouseEvent event) {
 
+    }
+
+    TherapyProgramDTO getTextFieldsValues() {
+        String programId = txtProgramID.getText();
+        String programName = txtProgramName.getText();
+        String duration = txtDuration.getText();
+        BigDecimal fee = new BigDecimal(txtFee.getText());
+
+        return new TherapyProgramDTO(programId, programName, duration, fee);
+    }
+
+    boolean validateTextFields() {
+        boolean isValidFee = ValidationUtil.isValidAmount(txtFee);
+
+        return isValidFee;
     }
 
     @Override

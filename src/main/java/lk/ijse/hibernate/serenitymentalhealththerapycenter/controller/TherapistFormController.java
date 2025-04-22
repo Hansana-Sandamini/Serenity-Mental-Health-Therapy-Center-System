@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.BOFactory;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.TherapistBO;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.TherapistDTO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.util.ValidationUtil;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.TherapistTM;
 
 import java.io.IOException;
@@ -146,6 +147,25 @@ public class TherapistFormController implements Initializable {
     @FXML
     void tblTherapistsOnClicked(MouseEvent event) {
 
+    }
+
+    TherapistDTO getTextFieldsValues() {
+        String therapistId = txtTherapistID.getText();
+        String name = cmbTitle.getValue() + " " + txtName.getText();
+        String contactNumber = txtContactNumber.getText();
+        String email = txtEmail.getText();
+        String availabilityStatus = cmbAvailabilityStatus.getValue();
+        String specialization = cmbSpecialization.getValue();
+
+        return new TherapistDTO(therapistId, name, contactNumber, email, availabilityStatus, specialization);
+    }
+
+    boolean validateTextFields() {
+        boolean isValidName = ValidationUtil.isValidName(txtName);
+        boolean isValidEmail = ValidationUtil.isValidEmail(txtEmail);
+        boolean isValidContactNumber = ValidationUtil.isValidContactNumber(txtContactNumber);
+
+        return isValidName && isValidEmail && isValidContactNumber;
     }
 
     @Override
