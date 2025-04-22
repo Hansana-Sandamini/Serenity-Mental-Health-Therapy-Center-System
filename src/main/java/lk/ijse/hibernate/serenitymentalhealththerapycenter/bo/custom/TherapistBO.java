@@ -10,5 +10,5 @@ public interface TherapistBO extends SuperBO {
     public boolean updateTherapist(TherapistDTO therapistDTO) throws Exception;
     public boolean deleteTherapist(String selectedTherapist) throws Exception;
     public String getNextTherapistId() throws Exception;
-    public List<TherapistDTO> loadAllTherapistIds() throws Exception;
+    public List<String> loadAllTherapistIds() throws Exception;
 }

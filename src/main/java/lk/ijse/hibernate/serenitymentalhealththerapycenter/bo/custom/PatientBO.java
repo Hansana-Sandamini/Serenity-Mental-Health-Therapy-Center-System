@@ -10,5 +10,5 @@ public interface PatientBO extends SuperBO {
     public boolean updatePatient(PatientDTO patientDTO) throws Exception;
     public boolean deletePatient(String selectedPatient) throws Exception;
     public String getNextPatientId() throws Exception;
-    public List<PatientDTO> loadAllPatientIds() throws Exception;
+    public List<String> loadAllPatientIds() throws Exception;
 }

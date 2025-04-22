@@ -37,4 +37,11 @@ public class TherapyProgram implements SuperEntity {
 
     @ManyToMany(mappedBy = "therapyPrograms")
     private List<Patient> patients;
+
+    public TherapyProgram(String programId, String programName, String duration, BigDecimal fee) {
+        this.programId = programId;
+        this.programName = programName;
+        this.duration = duration;
+        this.fee = fee;
+    }
 }

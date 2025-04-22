@@ -48,4 +48,13 @@ public class Patient implements SuperEntity {
             inverseJoinColumns = @JoinColumn(name = "program_id")
     )
     private List<TherapyProgram> therapyPrograms;
+
+    public Patient(String patientId, String name, String contactNumber, String email, int age, LocalDate registrationDate) {
+        this.patientId = patientId;
+        this.name = name;
+        this.contactNumber = contactNumber;
+        this.email = email;
+        this.age = age;
+        this.registrationDate = registrationDate;
+    }
 }

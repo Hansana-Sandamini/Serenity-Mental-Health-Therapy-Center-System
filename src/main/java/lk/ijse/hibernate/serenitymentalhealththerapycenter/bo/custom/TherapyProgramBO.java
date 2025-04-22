@@ -10,5 +10,5 @@ public interface TherapyProgramBO extends SuperBO {
     public boolean updateTherapyProgram(TherapyProgramDTO therapyProgramDTO) throws Exception;
     public boolean deleteTherapyProgram(String selectedProgram) throws Exception;
     public String getNextTherapyProgramId() throws Exception;
-    public List<TherapyProgramDTO> loadAllTherapyProgramIds() throws Exception;
+    public List<String> loadAllTherapyProgramIds() throws Exception;
 }

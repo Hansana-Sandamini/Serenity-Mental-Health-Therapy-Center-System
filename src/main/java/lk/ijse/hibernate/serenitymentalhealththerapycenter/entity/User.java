@@ -22,15 +22,11 @@ public class User implements SuperEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private String role;
 
     @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String contactNumber;
-
-    public enum Role {
-        ADMIN, RECEPTIONIST
-    }
 }

@@ -3,8 +3,8 @@ package lk.ijse.hibernate.serenitymentalhealththerapycenter.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.sql.Time;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,7 +39,10 @@ public class Payment implements SuperEntity {
     private BigDecimal amountToPay;
 
     @Column(nullable = false)
-    private LocalDateTime dateTime;
+    private LocalDate date;
+
+    @Column(nullable = false)
+    private Time time;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

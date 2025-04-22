@@ -2,6 +2,8 @@ package lk.ijse.hibernate.serenitymentalhealththerapycenter.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,12 +18,6 @@ public class TherapySession implements SuperEntity {
     @Column(name = "session_id")
     private String sessionId;
 
-    @Column(nullable = false)
-    private LocalDateTime dateTime;
-
-    @Column(nullable = false)
-    private String status;
-
     @ManyToOne
     @JoinColumn(name = "program_id", nullable = false)
     private TherapyProgram therapyProgram;
@@ -33,6 +29,15 @@ public class TherapySession implements SuperEntity {
     @ManyToOne
     @JoinColumn(name = "therapist_id", nullable = false)
     private Therapist therapist;
+    
+    @Column(nullable = false)
+    private LocalDate date;
+
+    @Column(nullable = false)
+    private String time;
+
+    @Column(nullable = false)
+    private String status;
 
     @OneToMany(mappedBy = "session", cascade = CascadeType.ALL)
     private List<Payment> payments;

@@ -35,4 +35,13 @@ public class Therapist implements SuperEntity {
 
     @OneToMany(mappedBy = "therapist")
     private List<TherapyProgram> therapyPrograms;
+
+    public Therapist(String therapistId, String name, String contactNumber, String email, String availabilityStatus, String specialization) {
+        this.therapistId = therapistId;
+        this.name = name;
+        this.contactNumber = contactNumber;
+        this.email = email;
+        this.availabilityStatus = availabilityStatus;
+        this.specialization = specialization;
+    }
 }

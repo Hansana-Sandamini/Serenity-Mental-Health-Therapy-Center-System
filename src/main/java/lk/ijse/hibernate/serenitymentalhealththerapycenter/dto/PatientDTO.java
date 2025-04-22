@@ -2,7 +2,7 @@ package lk.ijse.hibernate.serenitymentalhealththerapycenter.dto;
 
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -15,5 +15,5 @@ public class PatientDTO {
     private String contactNumber;
     private String email;
     private int age;
-    private Date registrationDate;
+    private LocalDate registrationDate;
 }
