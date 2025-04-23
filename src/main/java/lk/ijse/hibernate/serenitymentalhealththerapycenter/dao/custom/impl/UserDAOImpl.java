@@ -5,6 +5,7 @@ import lk.ijse.hibernate.serenitymentalhealththerapycenter.dao.custom.UserDAO;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -104,6 +105,14 @@ public class UserDAOImpl implements UserDAO {
                 session.close();
             }
         }
+    }
+
+    @Override
+    public User getUserByUsername(String username) throws Exception {
+        Session session = factoryConfiguration.getSession();
+        Query<User> query = session.createQuery("FROM User WHERE username = :username", User.class);
+        query.setParameter("username", username);
+        return query.uniqueResult();
     }
 
     @Override

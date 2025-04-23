@@ -10,20 +10,20 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.BOFactory;
-import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.TherapySessionBO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.*;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.TherapySessionDTO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.Patient;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.Therapist;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.TherapyProgram;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.util.ValidationUtil;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.TherapySessionTM;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class TherapySessionFormController implements Initializable {
 
@@ -97,6 +97,9 @@ public class TherapySessionFormController implements Initializable {
     private TextField txtTime;
 
     TherapySessionBO sessionBO = (TherapySessionBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPY_SESSION);
+    PatientBO patientBO = (PatientBO) BOFactory.getInstance().getBO(BOFactory.BOType.PATIENT);
+    TherapyProgramBO programBO = (TherapyProgramBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPY_PROGRAM);
+    TherapistBO therapistBO = (TherapistBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPIST);
 
     @FXML
     void btnAddNewSessionOnAction(ActionEvent event) throws Exception {
@@ -182,13 +185,37 @@ public class TherapySessionFormController implements Initializable {
     }
 
     @FXML
-    void cmbPatientIDOnAction(ActionEvent event) {
+    void cmbPatientIDOnAction(ActionEvent event) throws Exception {
+        String selectedPatientID = cmbPatientID.getSelectionModel().getSelectedItem();
+        Patient patient = patientBO.searchPatient(selectedPatientID);
 
+        if (patient != null) {
+            cmbPatientID.setValue(patient.getPatientId());
+        }
+    }
+
+    private void loadPatientIDs() throws Exception {
+        List<String> patientIDs = patientBO.loadAllPatientIds();
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        observableList.addAll(patientIDs);
+        cmbPatientID.setItems(observableList);
     }
 
     @FXML
-    void cmbProgramIDOnAction(ActionEvent event) {
+    void cmbProgramIDOnAction(ActionEvent event) throws Exception {
+        String selectedProgramID = cmbProgramID.getSelectionModel().getSelectedItem();
+        TherapyProgram program = programBO.searchProgram(selectedProgramID);
 
+        if (program != null) {
+            cmbProgramID.setValue(program.getProgramId());
+        }
+    }
+
+    private void loadProgramIDs() throws Exception {
+        List<String> programIDs = programBO.loadAllTherapyProgramIds();
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        observableList.addAll(programIDs);
+        cmbProgramID.setItems(observableList);
     }
 
     @FXML
@@ -197,8 +224,20 @@ public class TherapySessionFormController implements Initializable {
     }
 
     @FXML
-    void cmbTherapistIDOnAction(ActionEvent event) {
+    void cmbTherapistIDOnAction(ActionEvent event) throws Exception {
+        String selectedTherapistID = cmbTherapistID.getSelectionModel().getSelectedItem();
+        Therapist therapist = therapistBO.searchTherapist(selectedTherapistID);
 
+        if (therapist != null) {
+            cmbTherapistID.setValue(therapist.getTherapistId());
+        }
+    }
+
+    private void loadTherapistIDs() throws Exception {
+        List<String> therapistIDs = therapistBO.loadAllTherapistIds();
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        observableList.addAll(therapistIDs);
+        cmbTherapistID.setItems(observableList);
     }
 
     @FXML
@@ -302,6 +341,11 @@ public class TherapySessionFormController implements Initializable {
 
     private void refreshPage() throws Exception {
         refreshTable();
+        clearFields();
+        setFormEnabled(false);
+        loadTherapistIDs();
+        loadProgramIDs();
+        loadPatientIDs();
     }
 
     private void refreshTable() throws Exception {

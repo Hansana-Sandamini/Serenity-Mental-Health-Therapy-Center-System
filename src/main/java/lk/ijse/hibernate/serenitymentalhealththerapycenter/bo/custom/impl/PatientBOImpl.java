@@ -69,4 +69,9 @@ public class PatientBOImpl implements PatientBO {
     public List<String> loadAllPatientIds() throws Exception {
         return patientDAO.loadAllIDs();
     }
+
+    @Override
+    public Patient searchPatient(String selectedPatientId) throws Exception {
+        return patientDAO.find(selectedPatientId);
+    }
 }

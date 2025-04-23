@@ -69,4 +69,9 @@ public class TherapistBOImpl implements TherapistBO {
     public List<String> loadAllTherapistIds() throws Exception {
         return therapistDAO.loadAllIDs();
     }
+
+    @Override
+    public Therapist searchTherapist(String selectedTherapistId) throws Exception {
+        return therapistDAO.find(selectedTherapistId);
+    }
 }

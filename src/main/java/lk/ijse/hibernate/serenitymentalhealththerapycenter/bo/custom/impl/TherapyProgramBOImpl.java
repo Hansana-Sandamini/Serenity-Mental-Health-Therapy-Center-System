@@ -63,4 +63,9 @@ public class TherapyProgramBOImpl implements TherapyProgramBO {
     public List<String> loadAllTherapyProgramIds() throws Exception {
         return therapyProgramDAO.loadAllIDs();
     }
+
+    @Override
+    public TherapyProgram searchProgram(String selectedProgramId) throws Exception {
+        return therapyProgramDAO.find(selectedProgramId);
+    }
 }

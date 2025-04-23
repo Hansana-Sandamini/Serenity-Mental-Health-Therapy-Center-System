@@ -10,9 +10,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.BOFactory;
-import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.PaymentBO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.*;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.PaymentDTO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.Patient;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.TherapyProgram;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.util.ValidationUtil;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.PaymentTM;
 
@@ -122,6 +123,9 @@ public class PaymentFormController implements Initializable {
     private TextField txtTime;
 
     PaymentBO paymentBO = (PaymentBO) BOFactory.getInstance().getBO(BOFactory.BOType.PAYMENT);
+    TherapySessionBO sessionBO = (TherapySessionBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPY_SESSION);
+    PatientBO patientBO = (PatientBO) BOFactory.getInstance().getBO(BOFactory.BOType.PATIENT);
+    TherapyProgramBO programBO = (TherapyProgramBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPY_PROGRAM);
 
     @FXML
     void btnAddNewPaymentOnAction(ActionEvent event) throws Exception {
@@ -212,13 +216,37 @@ public class PaymentFormController implements Initializable {
     }
 
     @FXML
-    void cmbPatientIDOnAction(ActionEvent event) {
+    void cmbPatientIDOnAction(ActionEvent event) throws Exception {
+        String selectedPatientID = cmbPatientID.getSelectionModel().getSelectedItem();
+        Patient patient = patientBO.searchPatient(selectedPatientID);
 
+        if (patient != null) {
+            cmbPatientID.setValue(patient.getPatientId());
+        }
+    }
+
+    private void loadPatientIDs() throws Exception {
+        List<String> patientIDs = patientBO.loadAllPatientIds();
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        observableList.addAll(patientIDs);
+        cmbPatientID.setItems(observableList);
     }
 
     @FXML
-    void cmbProgramIDOnAction(ActionEvent event) {
+    void cmbProgramIDOnAction(ActionEvent event) throws Exception {
+        String selectedProgramID = cmbProgramID.getSelectionModel().getSelectedItem();
+        TherapyProgram program = programBO.searchProgram(selectedProgramID);
 
+        if (program != null) {
+            cmbProgramID.setValue(program.getProgramId());
+        }
+    }
+
+    private void loadProgramIDs() throws Exception {
+        List<String> programIDs = programBO.loadAllTherapyProgramIds();
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        observableList.addAll(programIDs);
+        cmbProgramID.setItems(observableList);
     }
 
     @FXML

@@ -5,6 +5,7 @@ import lk.ijse.hibernate.serenitymentalhealththerapycenter.dao.DAOFactory;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.dao.custom.impl.UserDAOImpl;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.UserDTO;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,10 @@ public class UserBOImpl implements UserBO {
 
     @Override
     public boolean saveUser(UserDTO userDTO) throws Exception {
+        String hashedPassword = BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt());
         return userDAO.save(new User(
                 userDTO.getUsername(),
-                userDTO.getPassword(),
+                hashedPassword,
                 userDTO.getName(),
                 userDTO.getRole(),
                 userDTO.getEmail(),
@@ -45,9 +47,13 @@ public class UserBOImpl implements UserBO {
 
     @Override
     public boolean updateUser(UserDTO userDTO) throws Exception {
+        String hashedPassword = userDTO.getPassword();
+        if (!userDTO.getPassword().isEmpty() && !userDTO.getPassword().startsWith("$2a$")) {
+            hashedPassword = BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt());
+        }
         return userDAO.update(new User(
                 userDTO.getUsername(),
-                userDTO.getPassword(),
+                hashedPassword,
                 userDTO.getName(),
                 userDTO.getRole(),
                 userDTO.getEmail(),
@@ -58,5 +64,30 @@ public class UserBOImpl implements UserBO {
     @Override
     public boolean deleteUser(String selectedUser) throws Exception {
         return userDAO.delete(selectedUser);
+    }
+
+    @Override
+    public UserDTO getUserByUsername(String username) throws Exception {
+        User user = userDAO.getUserByUsername(username);
+        if (user != null) {
+            return new UserDTO(
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getName(),
+                    user.getRole(),
+                    user.getEmail(),
+                    user.getContactNumber()
+            );
+        }
+        return null;
+    }
+
+    @Override
+    public boolean verifyUser(String username, String password, String role) throws Exception {
+        User user = userDAO.getUserByUsername(username);
+        if (user != null && user.getRole().equals(role)) {
+            return BCrypt.checkpw(password, user.getPassword());
+        }
+        return false;
     }
 }

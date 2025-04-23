@@ -1,6 +1,7 @@
 package lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom;
 
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.TherapistDTO;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.Therapist;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface TherapistBO extends SuperBO {
     public boolean deleteTherapist(String selectedTherapist) throws Exception;
     public String getNextTherapistId() throws Exception;
     public List<String> loadAllTherapistIds() throws Exception;
+    Therapist searchTherapist(String selectedTherapistId) throws Exception;
 }
