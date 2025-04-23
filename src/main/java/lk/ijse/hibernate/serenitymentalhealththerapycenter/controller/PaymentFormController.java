@@ -6,12 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -28,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class PaymentFormController implements Initializable {
@@ -128,28 +124,86 @@ public class PaymentFormController implements Initializable {
     PaymentBO paymentBO = (PaymentBO) BOFactory.getInstance().getBO(BOFactory.BOType.PAYMENT);
 
     @FXML
-    void btnAddNewPaymentOnAction(ActionEvent event) {
-
+    void btnAddNewPaymentOnAction(ActionEvent event) throws Exception {
+        setFormEnabled(true);
+        clearFields();
+        cmbPatientID.requestFocus();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        String selectedPaymentId = tblPayments.getSelectionModel().getSelectedItem().getPaymentId();
 
+        if (selectedPaymentId != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Are you sure you want to remove this Payment?",
+                    ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+                try {
+                    paymentBO.deletePayment(selectedPaymentId);
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION,
+                            "Payment Successfully Deleted...!");
+                    successAlert.showAndWait();
+                    refreshTable();
+                } catch (Exception e) {
+                    new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
+                }
+            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "No Payment selected to Remove...!").show();
+        }
     }
 
     @FXML
-    void btnRefreshOnAction(ActionEvent event) {
-
+    void btnRefreshOnAction(ActionEvent event) throws Exception {
+        refreshPage();
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
+    void btnSaveOnAction(ActionEvent event) throws Exception {
+        if (validateTextFields()) {
+            PaymentDTO paymentDTO = getTextFieldsValues();
 
+            boolean isSaved = paymentBO.savePayment(paymentDTO);
+
+            if (isSaved) {
+                new Alert(Alert.AlertType.INFORMATION, "Payment Saved...!").show();
+                refreshPage();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Failed to Save Payment...!").show();
+            }
+        }
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
+    void btnUpdateOnAction(ActionEvent event) throws Exception {
+        String selectedPaymentId = tblPayments.getSelectionModel().getSelectedItem().getPaymentId();
 
+        if (selectedPaymentId != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Are you sure you want to update this Payment?",
+                    ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+                if (validateTextFields()) {
+                    try {
+                        PaymentDTO paymentDTO = getTextFieldsValues();
+                        paymentBO.updatePayment(paymentDTO);
+                        new Alert(Alert.AlertType.INFORMATION, "Payment Updated...!").show();
+                        refreshPage();
+                    } catch (Exception e) {
+                        new Alert(Alert.AlertType.ERROR, "Failed to Update Payment...!").show();
+                    }
+                }
+            } else {
+                refreshPage();
+            }
+        }
     }
 
     @FXML
@@ -189,7 +243,20 @@ public class PaymentFormController implements Initializable {
 
     @FXML
     void tblPaymentsOnClicked(MouseEvent event) {
-
+        setFormEnabled(true);
+        PaymentTM selectedItem = tblPayments.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            txtPaymentID.setText(selectedItem.getPaymentId());
+            cmbPatientID.setValue(selectedItem.getPatientId());
+            cmbProgramID.setValue(selectedItem.getProgramId());
+            cmbSessionID.setValue(selectedItem.getSessionId());
+            txtAmount.setText(selectedItem.getAmount().toString());
+            txtAmountPaid.setText(selectedItem.getAmountPaid().toString());
+            txtAmountToPay.setText(selectedItem.getAmountToPay().toString());
+//            txtDate.setValue(LocalDate.ofInstant(selectedItem.getDate().toInstant(), ));
+            txtTime.setText(selectedItem.getTime());
+            cmbStatus.setValue(selectedItem.getStatus());
+        }
     }
 
     PaymentDTO getTextFieldsValues() {
@@ -218,6 +285,9 @@ public class PaymentFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        cmbStatus.getItems().addAll("Pending", "Completed");
+        cmbTimeAmPm.getItems().addAll("AM", "PM");
+
         colPaymentID.setCellValueFactory(new PropertyValueFactory<>("paymentId"));
         colPatientID.setCellValueFactory(new PropertyValueFactory<>("patientId"));
         colProgramID.setCellValueFactory(new PropertyValueFactory<>("programId"));
@@ -229,6 +299,8 @@ public class PaymentFormController implements Initializable {
         colTime.setCellValueFactory(new PropertyValueFactory<>("time"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
+        setFormEnabled(false);
+
         try {
             refreshPage();
         } catch (Exception e) {
@@ -236,9 +308,7 @@ public class PaymentFormController implements Initializable {
         }
     }
 
-    private void refreshPage() throws Exception {
-        refreshTable();
-
+    private void clearFields() throws Exception {
         txtPaymentID.setText(paymentBO.getNextPaymentId());
         cmbPatientID.setValue("");
         cmbProgramID.setValue("");
@@ -250,6 +320,12 @@ public class PaymentFormController implements Initializable {
         txtTime.setText("");
         cmbTimeAmPm.setValue("");
         cmbStatus.setValue("");
+    }
+
+    private void refreshPage() throws Exception {
+        refreshTable();
+        clearFields();
+        setFormEnabled(false);
     }
 
     private void refreshTable() throws Exception {
@@ -272,5 +348,25 @@ public class PaymentFormController implements Initializable {
             paymentTMS.add(paymentTM);
         }
         tblPayments.setItems(paymentTMS);
+    }
+
+    private void setFormEnabled(boolean enabled) {
+        cmbPatientID.setDisable(!enabled);
+        cmbProgramID.setDisable(!enabled);
+        cmbSessionID.setDisable(!enabled);
+        txtAmount.setDisable(!enabled);
+        txtAmountPaid.setDisable(!enabled);
+        txtAmountToPay.setDisable(!enabled);
+        txtDate.setDisable(!enabled);
+        txtTime.setDisable(!enabled);
+        cmbTimeAmPm.setDisable(!enabled);
+        cmbStatus.setDisable(!enabled);
+
+        btnSave.setDisable(!enabled);
+        btnUpdate.setDisable(!enabled);
+        btnDelete.setDisable(!enabled);
+        btnViewInvoice.setDisable(!enabled);
+
+        btnAddNewPayment.setDisable(enabled);
     }
 }

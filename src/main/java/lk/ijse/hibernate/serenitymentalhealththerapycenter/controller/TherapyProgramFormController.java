@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class TherapyProgramFormController implements Initializable {
@@ -76,28 +77,83 @@ public class TherapyProgramFormController implements Initializable {
     TherapyProgramBO programBO = (TherapyProgramBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPY_PROGRAM);
 
     @FXML
-    void btnAddNewProgramOnAction(ActionEvent event) {
-
+    void btnAddNewProgramOnAction(ActionEvent event) throws Exception {
+        setFormEnabled(true);
+        clearFields();
+        txtProgramName.requestFocus();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        String selectedProgramId = tblTherapyPrograms.getSelectionModel().getSelectedItem().getProgramId();
 
+        if (selectedProgramId != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove this Therapy Program?", ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+                try {
+                    programBO.deleteTherapyProgram(selectedProgramId);
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION, "Therapy Program Successfully Deleted...!");
+                    successAlert.showAndWait();
+                    refreshTable();
+
+                } catch (Exception e) {
+                    new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
+                }
+            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "No Therapy Program selected to Remove...!").show();
+        }
     }
 
     @FXML
-    void btnRefreshOnAction(ActionEvent event) {
-
+    void btnRefreshOnAction(ActionEvent event) throws Exception {
+        refreshPage();
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
+    void btnSaveOnAction(ActionEvent event) throws Exception {
+        if (validateTextFields()) {
+            TherapyProgramDTO programDTO = getTextFieldsValues();
 
+            boolean isSaved = programBO.saveTherapyProgram(programDTO);
+
+            if (isSaved) {
+                new Alert(Alert.AlertType.INFORMATION, "Therapy Program Saved...!").show();
+                refreshPage();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Fail to Save Therapy Program...!").show();
+            }
+        }
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
+    void btnUpdateOnAction(ActionEvent event) throws Exception {
+        String selectedProgramId = tblTherapyPrograms.getSelectionModel().getSelectedItem().getProgramId();
 
+        if (selectedProgramId != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to update this Therapy Program?", ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+                if (validateTextFields()) {
+                    try {
+                        TherapyProgramDTO programDTO = getTextFieldsValues();
+                        programBO.updateTherapyProgram(programDTO);
+                        new Alert(Alert.AlertType.INFORMATION, "Therapy Program Updated...!").show();
+                        refreshPage();
+
+                    } catch (Exception e) {
+                        new Alert(Alert.AlertType.ERROR, "Fail to Update Therapy Program...!").show();
+                    }
+                }
+            } else {
+                refreshPage();
+            }
+        }
     }
 
     public void navigateToHome(String fxmlPath) {
@@ -117,7 +173,14 @@ public class TherapyProgramFormController implements Initializable {
 
     @FXML
     void tblTherapyProgramsOnClicked(MouseEvent event) {
-
+        setFormEnabled(true);
+        TherapyProgramTM selectedItem = tblTherapyPrograms.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            txtProgramID.setText(selectedItem.getProgramId());
+            txtProgramName.setText(selectedItem.getProgramName());
+            txtDuration.setText(selectedItem.getDuration());
+            txtFee.setText(selectedItem.getFee().toString());
+        }
     }
 
     TherapyProgramDTO getTextFieldsValues() {
@@ -142,6 +205,8 @@ public class TherapyProgramFormController implements Initializable {
         colDuration.setCellValueFactory(new PropertyValueFactory<>("duration"));
         colFee.setCellValueFactory(new PropertyValueFactory<>("fee"));
 
+        setFormEnabled(false);
+
         try {
             refreshPage();
         } catch (Exception e) {
@@ -149,13 +214,17 @@ public class TherapyProgramFormController implements Initializable {
         }
     }
 
-    private void refreshPage() throws Exception {
-        refreshTable();
-
+    private void clearFields() throws Exception {
         txtProgramID.setText(programBO.getNextTherapyProgramId());
         txtProgramName.setText("");
         txtDuration.setText("");
         txtFee.setText("");
+    }
+
+    private void refreshPage() throws Exception {
+        refreshTable();
+        clearFields();
+        setFormEnabled(false);
     }
 
     private void refreshTable() throws Exception {
@@ -172,5 +241,17 @@ public class TherapyProgramFormController implements Initializable {
             programTMS.add(programTM);
         }
         tblTherapyPrograms.setItems(programTMS);
+    }
+
+    private void setFormEnabled(boolean enabled) {
+        txtProgramName.setDisable(!enabled);
+        txtDuration.setDisable(!enabled);
+        txtFee.setDisable(!enabled);
+
+        btnSave.setDisable(!enabled);
+        btnUpdate.setDisable(!enabled);
+        btnDelete.setDisable(!enabled);
+
+        btnAddNewProgram.setDisable(enabled);
     }
 }

@@ -6,12 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -27,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class TherapySessionFormController implements Initializable {
@@ -103,28 +99,86 @@ public class TherapySessionFormController implements Initializable {
     TherapySessionBO sessionBO = (TherapySessionBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPY_SESSION);
 
     @FXML
-    void btnAddNewSessionOnAction(ActionEvent event) {
-
+    void btnAddNewSessionOnAction(ActionEvent event) throws Exception {
+        setFormEnabled(true);
+        clearFields();
+        cmbPatientID.requestFocus();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        String selectedSessionId = tblSessions.getSelectionModel().getSelectedItem().getSessionId();
 
+        if (selectedSessionId != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Are you sure you want to remove this Therapy Session?",
+                    ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+                try {
+                    sessionBO.deleteTherapySession(selectedSessionId);
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION,
+                            "Therapy Session Successfully Deleted...!");
+                    successAlert.showAndWait();
+                    refreshTable();
+                } catch (Exception e) {
+                    new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
+                }
+            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "No Therapy Session selected to Remove...!").show();
+        }
     }
 
     @FXML
-    void btnRefreshOnAction(ActionEvent event) {
-
+    void btnRefreshOnAction(ActionEvent event) throws Exception {
+        refreshPage();
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
+    void btnSaveOnAction(ActionEvent event) throws Exception {
+        if (validateTextFields()) {
+            TherapySessionDTO sessionDTO = getTextFieldsValues();
 
+            boolean isSaved = sessionBO.saveTherapySession(sessionDTO);
+
+            if (isSaved) {
+                new Alert(Alert.AlertType.INFORMATION, "Therapy Session Saved...!").show();
+                refreshPage();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Failed to Save Therapy Session...!").show();
+            }
+        }
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
+    void btnUpdateOnAction(ActionEvent event) throws Exception {
+        String selectedSessionId = tblSessions.getSelectionModel().getSelectedItem().getSessionId();
 
+        if (selectedSessionId != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Are you sure you want to update this Therapy Session?",
+                    ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+                if (validateTextFields()) {
+                    try {
+                        TherapySessionDTO sessionDTO = getTextFieldsValues();
+                        sessionBO.updateTherapySession(sessionDTO);
+                        new Alert(Alert.AlertType.INFORMATION, "Therapy Session Updated...!").show();
+                        refreshPage();
+                    } catch (Exception e) {
+                        new Alert(Alert.AlertType.ERROR, "Failed to Update Therapy Session...!").show();
+                    }
+                }
+            } else {
+                refreshPage();
+            }
+        }
     }
 
     @FXML
@@ -159,7 +213,17 @@ public class TherapySessionFormController implements Initializable {
 
     @FXML
     void tblSessionsOnClicked(MouseEvent event) {
-
+        setFormEnabled(true);
+        TherapySessionTM selectedItem = tblSessions.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            txtSessionID.setText(selectedItem.getSessionId());
+            cmbProgramID.setValue(selectedItem.getProgramId());
+            cmbPatientID.setValue(selectedItem.getPatientId());
+            cmbTherapistID.setValue(selectedItem.getTherapistId());
+            txtDate.setValue(selectedItem.getDate());
+            txtTime.setText(selectedItem.getTime());
+            cmbStatus.setValue(selectedItem.getStatus());
+        }
     }
 
     TherapySessionDTO getTextFieldsValues() {
@@ -169,6 +233,7 @@ public class TherapySessionFormController implements Initializable {
         String therapistId = cmbTherapistID.getValue();
         LocalDate date = txtDate.getValue();
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+//        String time = txtTime.getText() + " " + cmbTimeAmPm.getValue();
         String status = cmbStatus.getValue();
 
         return new TherapySessionDTO(sessionId, programId, patientId, therapistId, date, time, status);
@@ -176,12 +241,37 @@ public class TherapySessionFormController implements Initializable {
 
     boolean validateTextFields() {
         boolean isValidTime = ValidationUtil.isValidTime(txtTime);
+        boolean isPatientSelected = cmbPatientID.getValue() != null;
+        boolean isProgramSelected = cmbProgramID.getValue() != null;
+        boolean isTherapistSelected = cmbTherapistID.getValue() != null;
+        boolean isStatusSelected = cmbStatus.getValue() != null;
+        boolean isDateValid = txtDate.getValue() != null && !txtDate.getValue().isBefore(LocalDate.now());
 
-        return isValidTime;
+        if (!isPatientSelected) {
+            new Alert(Alert.AlertType.WARNING, "Please select a Patient!").show();
+        }
+        if (!isProgramSelected) {
+            new Alert(Alert.AlertType.WARNING, "Please select a Program!").show();
+        }
+        if (!isTherapistSelected) {
+            new Alert(Alert.AlertType.WARNING, "Please select a Therapist!").show();
+        }
+        if (!isStatusSelected) {
+            new Alert(Alert.AlertType.WARNING, "Please select a Status!").show();
+        }
+        if (!isDateValid) {
+            new Alert(Alert.AlertType.WARNING, "Please select a valid Date!").show();
+        }
+
+        return isValidTime && isPatientSelected && isProgramSelected &&
+                isTherapistSelected && isStatusSelected && isDateValid;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        cmbStatus.getItems().addAll("Scheduled", "Completed", "Cancelled");
+        cmbTimeAmPm.getItems().addAll("AM", "PM");
+
         colSessionID.setCellValueFactory(new PropertyValueFactory<>("sessionId"));
         colProgramID.setCellValueFactory(new PropertyValueFactory<>("programId"));
         colPatientID.setCellValueFactory(new PropertyValueFactory<>("patientId"));
@@ -190,6 +280,8 @@ public class TherapySessionFormController implements Initializable {
         colTime.setCellValueFactory(new PropertyValueFactory<>("time"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
+        setFormEnabled(false);
+
         try {
             refreshPage();
         } catch (Exception e) {
@@ -197,9 +289,7 @@ public class TherapySessionFormController implements Initializable {
         }
     }
 
-    private void refreshPage() throws Exception {
-        refreshTable();
-
+    private void clearFields() throws Exception {
         txtSessionID.setText(sessionBO.getNextTherapySessionId());
         cmbProgramID.setValue("");
         cmbPatientID.setValue("");
@@ -208,6 +298,10 @@ public class TherapySessionFormController implements Initializable {
         cmbTimeAmPm.setValue("");
         txtTime.setText("");
         cmbStatus.setValue("");
+    }
+
+    private void refreshPage() throws Exception {
+        refreshTable();
     }
 
     private void refreshTable() throws Exception {
@@ -227,6 +321,22 @@ public class TherapySessionFormController implements Initializable {
             sessionTMS.add(sessionTM);
         }
         tblSessions.setItems(sessionTMS);
+    }
+
+    private void setFormEnabled(boolean enabled) {
+        cmbProgramID.setDisable(!enabled);
+        cmbPatientID.setDisable(!enabled);
+        cmbTherapistID.setDisable(!enabled);
+        txtDate.setDisable(!enabled);
+        txtTime.setDisable(!enabled);
+        cmbTimeAmPm.setDisable(!enabled);
+        cmbStatus.setDisable(!enabled);
+
+        btnSave.setDisable(!enabled);
+        btnUpdate.setDisable(!enabled);
+        btnDelete.setDisable(!enabled);
+
+        btnAddNewSession.setDisable(enabled);
     }
 }
 

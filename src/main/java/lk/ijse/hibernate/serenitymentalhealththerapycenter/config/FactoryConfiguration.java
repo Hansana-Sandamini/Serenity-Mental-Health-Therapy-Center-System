@@ -5,36 +5,42 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.io.IOException;
+import java.util.Properties;
+
 public class FactoryConfiguration {
-    private static FactoryConfiguration factoryConfiguration;
-    private final SessionFactory sessionFactory;
+    public static FactoryConfiguration factoryConfiguration;
+    private static SessionFactory sessionFactory;
 
     private FactoryConfiguration() {
-        Configuration configuration = new Configuration()
-                .configure("hibernate.cfg.xml")
-                .addAnnotatedClass(User.class)
+        Configuration configuration = new Configuration();
+        Properties properties = new Properties();
+
+        try {
+            properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("hibernate.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        configuration.setProperties(properties);
+
+        configuration.addAnnotatedClass(User.class)
+                .addAnnotatedClass(Patient.class)
+                .addAnnotatedClass(Payment.class)
                 .addAnnotatedClass(Therapist.class)
                 .addAnnotatedClass(TherapyProgram.class)
-                .addAnnotatedClass(Patient.class)
-                .addAnnotatedClass(TherapySession.class)
-                .addAnnotatedClass(Payment.class);
+                .addAnnotatedClass(TherapySession.class);
+
         sessionFactory = configuration.buildSessionFactory();
     }
 
     public static FactoryConfiguration getInstance() {
-        if (factoryConfiguration == null) {
-            factoryConfiguration = new FactoryConfiguration();
-        }
-        return factoryConfiguration;
+        return (factoryConfiguration == null) ?
+                (factoryConfiguration = new FactoryConfiguration()) :
+                factoryConfiguration;
     }
 
     public Session getSession() {
         return sessionFactory.openSession();
-    }
-
-    public void closeSessionFactory() {
-        if (sessionFactory != null && !sessionFactory.isClosed()) {
-            sessionFactory.close();
-        }
     }
 }

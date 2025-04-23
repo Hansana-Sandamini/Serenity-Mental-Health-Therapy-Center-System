@@ -6,12 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -26,6 +21,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Optional;
 
 public class PatientFormController implements Initializable {
 
@@ -95,28 +91,86 @@ public class PatientFormController implements Initializable {
     PatientBO patientBO = (PatientBO) BOFactory.getInstance().getBO(BOFactory.BOType.PATIENT);
 
     @FXML
-    void btnAddNewPatientOnAction(ActionEvent event) {
-
+    void btnAddNewPatientOnAction(ActionEvent event) throws Exception {
+        setFormEnabled(true);
+        clearFields();
+        txtName.requestFocus();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        String selectedPatientId = tblPatients.getSelectionModel().getSelectedItem().getPatientId();
 
+        if (selectedPatientId != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Are you sure you want to remove this Patient?",
+                    ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+                try {
+                    patientBO.deletePatient(selectedPatientId);
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION,
+                            "Patient Successfully Deleted...!");
+                    successAlert.showAndWait();
+                    refreshTable();
+                } catch (Exception e) {
+                    new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
+                }
+            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "No Patient selected to Remove...!").show();
+        }
     }
 
     @FXML
-    void btnRefreshOnAction(ActionEvent event) {
-
+    void btnRefreshOnAction(ActionEvent event) throws Exception {
+        refreshPage();
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
+    void btnSaveOnAction(ActionEvent event) throws Exception {
+        if (validateTextFields()) {
+            PatientDTO patientDTO = getTextFieldsValues();
 
+            boolean isSaved = patientBO.savePatient(patientDTO);
+
+            if (isSaved) {
+                new Alert(Alert.AlertType.INFORMATION, "Patient Saved...!").show();
+                refreshPage();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Failed to Save Patient...!").show();
+            }
+        }
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
+    void btnUpdateOnAction(ActionEvent event) throws Exception {
+        String selectedPatientId = tblPatients.getSelectionModel().getSelectedItem().getPatientId();
 
+        if (selectedPatientId != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Are you sure you want to update this Patient?",
+                    ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+                if (validateTextFields()) {
+                    try {
+                        PatientDTO patientDTO = getTextFieldsValues();
+                        patientBO.updatePatient(patientDTO);
+                        new Alert(Alert.AlertType.INFORMATION, "Patient Updated...!").show();
+                        refreshPage();
+                    } catch (Exception e) {
+                        new Alert(Alert.AlertType.ERROR, "Failed to Update Patient...!").show();
+                    }
+                }
+            } else {
+                refreshPage();
+            }
+        }
     }
 
     @FXML
@@ -131,7 +185,16 @@ public class PatientFormController implements Initializable {
 
     @FXML
     void tblPatientsOnClicked(MouseEvent event) {
-
+        setFormEnabled(true);
+        PatientTM selectedItem = tblPatients.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            txtPatientID.setText(selectedItem.getPatientId());
+            txtName.setText(selectedItem.getName());
+            txtContactNumber.setText(selectedItem.getContactNumber());
+            txtEmail.setText(selectedItem.getEmail());
+            txtAge.setText(String.valueOf(selectedItem.getAge()));
+            txtRegistrationDate.setValue(selectedItem.getRegistrationDate());
+        }
     }
 
     PatientDTO getTextFieldsValues() {
@@ -155,12 +218,17 @@ public class PatientFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        cmbTitle.getItems().addAll("Mr.", "Mrs.", "Miss", "Dr.");
+        cmbTitle.setValue("Mr.");
+
         colPatientID.setCellValueFactory(new PropertyValueFactory<>("patientId"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colContactNumber.setCellValueFactory(new PropertyValueFactory<>("contactNumber"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colAge.setCellValueFactory(new PropertyValueFactory<>("age"));
         colRegistrationDate.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
+
+        setFormEnabled(false);
 
         try {
             refreshPage();
@@ -169,9 +237,7 @@ public class PatientFormController implements Initializable {
         }
     }
 
-    private void refreshPage() throws Exception {
-        refreshTable();
-
+    private void clearFields() throws Exception {
         txtPatientID.setText(patientBO.getNextPatientId());
         txtName.setText("");
         txtName.setText("");
@@ -179,6 +245,12 @@ public class PatientFormController implements Initializable {
         txtEmail.setText("");
         txtAge.setText("");
         txtRegistrationDate.setValue(LocalDate.now());
+    }
+
+    private void refreshPage() throws Exception {
+        refreshTable();
+        clearFields();
+        setFormEnabled(false);
     }
 
     private void refreshTable() throws Exception {
@@ -197,5 +269,20 @@ public class PatientFormController implements Initializable {
             patientTMS.add(patientTM);
         }
         tblPatients.setItems(patientTMS);
+    }
+
+    private void setFormEnabled(boolean enabled) {
+        cmbTitle.setDisable(!enabled);
+        txtName.setDisable(!enabled);
+        txtContactNumber.setDisable(!enabled);
+        txtEmail.setDisable(!enabled);
+        txtAge.setDisable(!enabled);
+        txtRegistrationDate.setDisable(!enabled);
+
+        btnSave.setDisable(!enabled);
+        btnUpdate.setDisable(!enabled);
+        btnDelete.setDisable(!enabled);
+
+        btnAddNewPatient.setDisable(enabled);
     }
 }

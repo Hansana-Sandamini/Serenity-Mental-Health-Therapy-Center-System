@@ -20,7 +20,7 @@ public class User implements SuperEntity {
     @Column(nullable = false)
     private String name;
 
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private String role;
 

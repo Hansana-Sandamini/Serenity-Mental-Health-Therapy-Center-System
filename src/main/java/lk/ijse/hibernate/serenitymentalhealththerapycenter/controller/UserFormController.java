@@ -6,12 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -24,6 +19,7 @@ import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.UserTM;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UserFormController implements Initializable {
@@ -95,27 +91,83 @@ public class UserFormController implements Initializable {
 
     @FXML
     void btnAddNewUserOnAction(ActionEvent event) {
-
+        setFormEnabled(true);
+        clearFields();
+        txtUsername.requestFocus();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        String selectedUser = tblUsers.getSelectionModel().getSelectedItem().getUsername();
 
+        if (selectedUser != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove this User?", ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+                try {
+                    userBO.deleteUser(selectedUser);
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION, "User Successfully Deleted...!");
+                    successAlert.showAndWait();
+                    refreshPage();
+
+                } catch (Exception e) {
+                    new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
+                }
+            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "No User selected to Remove...!").show();
+        }
     }
 
     @FXML
-    void btnRefreshOnAction(ActionEvent event) {
-
+    void btnRefreshOnAction(ActionEvent event) throws Exception {
+        refreshPage();
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
+    void btnSaveOnAction(ActionEvent event) throws Exception {
+        if (validateTextFields()) {
+            UserDTO userDTO = getTextFieldsValues();
 
+            boolean isSaved = userBO.saveUser(userDTO);
+
+            if (isSaved) {
+                new Alert(Alert.AlertType.INFORMATION, "User Saved...!").show();
+                refreshPage();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Fail to Save User...!").show();
+            }
+        }
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
+    void btnUpdateOnAction(ActionEvent event) throws Exception {
+        String selectedUser = tblUsers.getSelectionModel().getSelectedItem().getUsername();
 
+        if (selectedUser != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to update this User?", ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+
+                if (validateTextFields()) {
+                    try {
+                        UserDTO userDTO = getTextFieldsValues();
+                        userBO.updateUser(userDTO);
+                        new Alert(Alert.AlertType.INFORMATION, "User Updated...!").show();
+                        refreshPage();
+
+                    } catch (Exception e) {
+                        new Alert(Alert.AlertType.ERROR, "Fail to Update User...!").show();
+                    }
+                }
+            } else {
+                refreshPage();
+            }
+        }
     }
 
     @FXML
@@ -135,7 +187,16 @@ public class UserFormController implements Initializable {
 
     @FXML
     void tblUsersOnClicked(MouseEvent event) {
-
+        setFormEnabled(true);
+        UserTM selectedItem = tblUsers.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            txtUsername.setText(selectedItem.getUsername());
+            txtPassword.setText(selectedItem.getPassword());
+            txtName.setText(selectedItem.getName());
+            cmbRole.setValue(selectedItem.getRole());
+            txtEmail.setText(selectedItem.getEmail());
+            txtContactNumber.setText(selectedItem.getContactNumber());
+        }
     }
 
     @FXML
@@ -164,12 +225,16 @@ public class UserFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        cmbRole.getItems().addAll("Admin", "Receptionist");
+
         colUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
         colPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colRole.setCellValueFactory(new PropertyValueFactory<>("role"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colContactNumber.setCellValueFactory(new PropertyValueFactory<>("contactNumber"));
+
+        setFormEnabled(false);
 
         try {
             refreshPage();
@@ -178,15 +243,19 @@ public class UserFormController implements Initializable {
         }
     }
 
-    private void refreshPage() throws Exception {
-        refreshTable();
-
+    private void clearFields() {
         txtUsername.setText("");
         txtPassword.setText("");
         txtName.setText("");
         cmbRole.setValue("");
         txtEmail.setText("");
         txtContactNumber.setText("");
+    }
+
+    private void refreshPage() throws Exception {
+        refreshTable();
+        clearFields();
+        setFormEnabled(false);
     }
 
     private void refreshTable() throws Exception {
@@ -205,5 +274,20 @@ public class UserFormController implements Initializable {
             userTMS.add(userTM);
         }
         tblUsers.setItems(userTMS);
+    }
+
+    private void setFormEnabled(boolean enabled) {
+        txtUsername.setDisable(!enabled);
+        txtPassword.setDisable(!enabled);
+        txtName.setDisable(!enabled);
+        cmbRole.setDisable(!enabled);
+        txtEmail.setDisable(!enabled);
+        txtContactNumber.setDisable(!enabled);
+
+        btnSave.setDisable(!enabled);
+        btnUpdate.setDisable(!enabled);
+        btnDelete.setDisable(!enabled);
+
+        btnAddNewUser.setDisable(enabled);
     }
 }

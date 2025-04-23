@@ -20,6 +20,7 @@ import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.TherapistTM;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class TherapistFormController implements Initializable {
@@ -90,28 +91,83 @@ public class TherapistFormController implements Initializable {
     TherapistBO therapistBO = (TherapistBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPIST);
 
     @FXML
-    void btnAddNewTherapistOnAction(ActionEvent event) {
-
+    void btnAddNewTherapistOnAction(ActionEvent event) throws Exception {
+        setFormEnabled(true);
+        clearFields();
+        txtName.requestFocus();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        String selectedTherapistId = tblTherapists.getSelectionModel().getSelectedItem().getTherapistId();
 
+        if (selectedTherapistId != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove this Therapist?", ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+                try {
+                    therapistBO.deleteTherapist(selectedTherapistId);
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION, "Therapist Successfully Deleted...!");
+                    successAlert.showAndWait();
+                    refreshTable();
+
+                } catch (Exception e) {
+                    new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
+                }
+            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "No Therapist selected to Remove...!").show();
+        }
     }
 
     @FXML
-    void btnRefreshOnAction(ActionEvent event) {
-
+    void btnRefreshOnAction(ActionEvent event) throws Exception {
+        refreshPage();
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
+    void btnSaveOnAction(ActionEvent event) throws Exception {
+        if (validateTextFields()) {
+            TherapistDTO therapistDTO = getTextFieldsValues();
 
+            boolean isSaved = therapistBO.saveTherapist(therapistDTO);
+
+            if (isSaved) {
+                new Alert(Alert.AlertType.INFORMATION, "Therapist Saved...!").show();
+                refreshPage();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Fail to Save Therapist...!").show();
+            }
+        }
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
+    void btnUpdateOnAction(ActionEvent event) throws Exception {
+        String selectedTherapistId = tblTherapists.getSelectionModel().getSelectedItem().getTherapistId();
 
+        if (selectedTherapistId != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to update this Therapist?", ButtonType.YES, ButtonType.NO);
+
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+                if (validateTextFields()) {
+                    try {
+                        TherapistDTO therapistDTO = getTextFieldsValues();
+                        therapistBO.updateTherapist(therapistDTO);
+                        new Alert(Alert.AlertType.INFORMATION, "Therapist Updated...!").show();
+                        refreshPage();
+
+                    } catch (Exception e) {
+                        new Alert(Alert.AlertType.ERROR, "Fail to Update Therapist...!").show();
+                    }
+                }
+            } else {
+                refreshPage();
+            }
+        }
     }
 
     @FXML
@@ -146,7 +202,23 @@ public class TherapistFormController implements Initializable {
 
     @FXML
     void tblTherapistsOnClicked(MouseEvent event) {
-
+        setFormEnabled(true);
+        TherapistTM selectedItem = tblTherapists.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            String[] nameParts = selectedItem.getName().split(" ", 2);
+            if (nameParts.length == 2) {
+                cmbTitle.setValue(nameParts[0]);
+                txtName.setText(nameParts[1]);
+            } else {
+                cmbTitle.setValue("");
+                txtName.setText(selectedItem.getName());
+            }
+            txtTherapistID.setText(selectedItem.getTherapistId());
+            txtContactNumber.setText(selectedItem.getContactNumber());
+            txtEmail.setText(selectedItem.getEmail());
+            cmbAvailabilityStatus.setValue(selectedItem.getAvailabilityStatus());
+            cmbSpecialization.setValue(selectedItem.getSpecialization());
+        }
     }
 
     TherapistDTO getTextFieldsValues() {
@@ -170,12 +242,24 @@ public class TherapistFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        cmbTitle.getItems().addAll("Dr.", "Prof.", "Mr.", "Mrs.", "Ms.");
+        cmbAvailabilityStatus.getItems().addAll("Available", "On Leave", "Not Available");
+        cmbSpecialization.getItems().addAll(
+                "Clinical Psychology",
+                "Counseling Psychology",
+                "Psychiatry",
+                "Child Psychology",
+                "Neuropsychology"
+        );
+
         colTherapistID.setCellValueFactory(new PropertyValueFactory<>("therapistId"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colContactNumber.setCellValueFactory(new PropertyValueFactory<>("contactNumber"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colAvailabilityStatus.setCellValueFactory(new PropertyValueFactory<>("availabilityStatus"));
         colSpecialization.setCellValueFactory(new PropertyValueFactory<>("specialization"));
+
+        setFormEnabled(false);
 
         try {
             refreshPage();
@@ -184,9 +268,7 @@ public class TherapistFormController implements Initializable {
         }
     }
 
-    private void refreshPage() throws Exception {
-        refreshTable();
-
+    private void clearFields() throws Exception {
         txtTherapistID.setText(therapistBO.getNextTherapistId());
         cmbTitle.setValue("");
         txtName.setText("");
@@ -194,6 +276,12 @@ public class TherapistFormController implements Initializable {
         txtEmail.setText("");
         cmbAvailabilityStatus.setValue("");
         cmbSpecialization.setValue("");
+    }
+
+    private void refreshPage() throws Exception {
+        refreshTable();
+        clearFields();
+        setFormEnabled(false);
     }
 
     private void refreshTable() throws Exception {
@@ -212,5 +300,20 @@ public class TherapistFormController implements Initializable {
             therapistTMS.add(therapistTM);
         }
         tblTherapists.setItems(therapistTMS);
+    }
+
+    private void setFormEnabled(boolean enabled) {
+        cmbTitle.setDisable(!enabled);
+        txtName.setDisable(!enabled);
+        txtContactNumber.setDisable(!enabled);
+        txtEmail.setDisable(!enabled);
+        cmbAvailabilityStatus.setDisable(!enabled);
+        cmbSpecialization.setDisable(!enabled);
+
+        btnSave.setDisable(!enabled);
+        btnUpdate.setDisable(!enabled);
+        btnDelete.setDisable(!enabled);
+
+        btnAddNewTherapist.setDisable(enabled);
     }
 }
