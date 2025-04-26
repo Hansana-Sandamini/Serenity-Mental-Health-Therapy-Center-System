@@ -46,26 +46,26 @@ public class AdminLoginFormController {
 
     @FXML
     void btnAdminLoginOnAction(ActionEvent event) throws IOException {
-//        String username = txtAdminUserName.getText();
-//        String password = checkShow.isSelected() ? txtPlainPassword.getText() : txtAdminPassword.getText();
-//
-//        if (username.isEmpty() || password.isEmpty()) {
-//            new Alert(Alert.AlertType.ERROR, "Username and password cannot be empty!").show();
-//            return;
-//        }
-//
-//        try {
-//            if (userBO.verifyUser(username, password, "Admin")) {
+        String username = txtAdminUserName.getText();
+        String password = checkShow.isSelected() ? txtPlainPassword.getText() : txtAdminPassword.getText();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            new Alert(Alert.AlertType.ERROR, "Username and password cannot be empty!").show();
+            return;
+        }
+
+        try {
+            if (userBO.verifyUser(username, password, "Admin")) {
                 adminLoginPane.getChildren().clear();
                 AnchorPane load = FXMLLoader.load(getClass().getResource("/view/AdminDashboardForm.fxml"));
                 adminLoginPane.getChildren().add(load);
-//            } else {
-//                new Alert(Alert.AlertType.ERROR, "Invalid username or password!").show();
-//            }
-//        } catch (Exception e) {
-//            new Alert(Alert.AlertType.ERROR, "Error during login: " + e.getMessage()).show();
-//            e.printStackTrace();
-//        }
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Invalid username or password!").show();
+            }
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Error during login: " + e.getMessage()).show();
+            e.printStackTrace();
+        }
     }
 
     @FXML

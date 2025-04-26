@@ -21,7 +21,7 @@ public class PaymentDTO {
     private BigDecimal amount;
     private BigDecimal amountPaid;
     private BigDecimal amountToPay;
-    private Date date;
-    private String time;
+    private LocalDate date;
+    private Time time;
     private String status;
 }

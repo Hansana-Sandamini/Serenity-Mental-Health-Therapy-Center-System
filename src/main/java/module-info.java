@@ -13,6 +13,7 @@ module lk.ijse.hibernate.serenitymentalhealththerapycenter {
     requires jakarta.persistence;
     requires java.naming;
     requires jbcrypt;
+//    requires jasperreports;
 
     opens lk.ijse.hibernate.serenitymentalhealththerapycenter.config to jakarta.persistence;
     opens lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm to javafx.base;

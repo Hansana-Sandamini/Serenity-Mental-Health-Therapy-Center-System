@@ -3,6 +3,8 @@ package lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.sql.Time;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -18,7 +20,7 @@ public class PaymentTM {
     private BigDecimal amount;
     private BigDecimal amountPaid;
     private BigDecimal amountToPay;
-    private Date date;
-    private String time;
+    private LocalDate date;
+    private Time time;
     private String status;
 }

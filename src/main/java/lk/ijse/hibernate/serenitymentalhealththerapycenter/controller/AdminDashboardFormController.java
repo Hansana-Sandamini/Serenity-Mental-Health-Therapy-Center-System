@@ -3,11 +3,16 @@ package lk.ijse.hibernate.serenitymentalhealththerapycenter.controller;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
+
 
 public class AdminDashboardFormController {
 
@@ -35,49 +40,58 @@ public class AdminDashboardFormController {
     @FXML
     private FontAwesomeIcon userIcon;
 
-    public void navigateTo(String fxmlPath) {
+    public void showPopup(String fxmlPath, String title) {
         try {
-            adminDashboardPane.getChildren().clear();
-            AnchorPane load = FXMLLoader.load(getClass().getResource(fxmlPath));
-            adminDashboardPane.getChildren().add(load);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            AnchorPane root = loader.load();
+
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.initStyle(StageStyle.DECORATED);
+            popupStage.setTitle(title);
+            popupStage.setScene(new Scene(root));
+
+            popupStage.showAndWait();
+
         } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR, "Fail to load page...!").show();
+            new Alert(Alert.AlertType.ERROR, "Failed to load " + title + " window").show();
+            e.printStackTrace();
         }
     }
 
     @FXML
     void patientIconOnAction(MouseEvent event) {
-        navigateTo("/view/PatientForm.fxml");
+        showPopup("/view/PatientForm.fxml", "Patient Management");
     }
 
     @FXML
     void paymentIconOnAction(MouseEvent event) {
-        navigateTo("/view/PaymentForm.fxml");
+        showPopup("/view/PaymentForm.fxml", "Payment Management");
     }
 
     @FXML
     void reportIconOnAction(MouseEvent event) {
-        navigateTo("/view/ReportsForm.fxml");
+        showPopup("/view/ReportsForm.fxml", "Reports");
     }
 
     @FXML
     void therapistIconOnAction(MouseEvent event) {
-        navigateTo("/view/TherapistForm.fxml");
+        showPopup("/view/TherapistForm.fxml", "Therapist Management");
     }
 
     @FXML
     void therapyProgramIconOnAction(MouseEvent event) {
-        navigateTo("/view/TherapyProgramForm.fxml");
+        showPopup("/view/TherapyProgramForm.fxml", "Therapy Program Management");
     }
 
     @FXML
     void therapySessionIconOnAction(MouseEvent event) {
-        navigateTo("/view/TherapySessionForm.fxml");
+        showPopup("/view/TherapySessionForm.fxml", "Therapy Session Management");
     }
 
     @FXML
     void userIconOnAction(MouseEvent event) {
-        navigateTo("/view/UserForm.fxml");
+        showPopup("/view/UserForm.fxml", "User Management");
     }
 
 }

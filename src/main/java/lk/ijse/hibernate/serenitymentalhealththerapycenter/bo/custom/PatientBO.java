@@ -2,7 +2,6 @@ package lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom;
 
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.PatientDTO;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.Patient;
-import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.Therapist;
 
 import java.util.List;
 

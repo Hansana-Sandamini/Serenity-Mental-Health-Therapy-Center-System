@@ -48,7 +48,7 @@ public class ReceptionistLoginFormController {
         }
 
         try {
-            if (userBO.verifyUser(username, password, "Admin")) {
+            if (userBO.verifyUser(username, password, "Receptionist")) {
                 receptionistLoginPane.getChildren().clear();
                 AnchorPane load = FXMLLoader.load(getClass().getResource("/view/ReceptionistDashboardForm.fxml"));
                 receptionistLoginPane.getChildren().add(load);

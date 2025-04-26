@@ -14,13 +14,16 @@ import lk.ijse.hibernate.serenitymentalhealththerapycenter.bo.custom.*;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.PaymentDTO;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.Patient;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.TherapyProgram;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.TherapySession;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.util.ValidationUtil;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.PaymentTM;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -255,8 +258,20 @@ public class PaymentFormController implements Initializable {
     }
 
     @FXML
-    void cmbSessionIDOnAction(ActionEvent event) {
+    void cmbSessionIDOnAction(ActionEvent event) throws Exception {
+        String selectedSessionID = cmbSessionID.getSelectionModel().getSelectedItem();
+        TherapySession session = sessionBO.searchSession(selectedSessionID);
 
+        if (session != null) {
+            cmbSessionID.setValue(session.getSessionId());
+        }
+    }
+
+    private void loadSessionIDs() throws Exception {
+        List<String> sessionIDs = sessionBO.loadAllTherapySessionIds();
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        observableList.addAll(sessionIDs);
+        cmbSessionID.setItems(observableList);
     }
 
     @FXML
@@ -282,7 +297,7 @@ public class PaymentFormController implements Initializable {
             txtAmountPaid.setText(selectedItem.getAmountPaid().toString());
             txtAmountToPay.setText(selectedItem.getAmountToPay().toString());
 //            txtDate.setValue(LocalDate.ofInstant(selectedItem.getDate().toInstant(), ));
-            txtTime.setText(selectedItem.getTime());
+            txtTime.setText(String.valueOf(selectedItem.getTime()));
             cmbStatus.setValue(selectedItem.getStatus());
         }
     }
@@ -295,8 +310,9 @@ public class PaymentFormController implements Initializable {
         BigDecimal amount = new BigDecimal(txtAmount.getText());
         BigDecimal amountPaid = new BigDecimal(txtAmountPaid.getText());
         BigDecimal amountToPay = new BigDecimal(txtAmountToPay.getText());
-        Date date = java.sql.Date.valueOf(LocalDate.now());
-        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        LocalDate date = java.sql.Date.valueOf(LocalDate.now()).toLocalDate();
+        Time time = Time.valueOf(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+
         String status = cmbStatus.getValue();
 
         return new PaymentDTO(paymentId, patientId, programId, sessionId, amount, amountPaid, amountToPay, date, time, status);
@@ -311,8 +327,16 @@ public class PaymentFormController implements Initializable {
         return isValidAmount && isValidAmountPaid && isValidAmountToPay && isValidTime;
     }
 
+    private void setCurrentTime() {
+        LocalTime currentTime = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String formattedTime = currentTime.format(formatter);
+        txtTime.setText(formattedTime);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setCurrentTime();
         cmbStatus.getItems().addAll("Pending", "Completed");
         cmbTimeAmPm.getItems().addAll("AM", "PM");
 
@@ -354,6 +378,9 @@ public class PaymentFormController implements Initializable {
         refreshTable();
         clearFields();
         setFormEnabled(false);
+        loadPatientIDs();
+        loadProgramIDs();
+        loadSessionIDs();
     }
 
     private void refreshTable() throws Exception {

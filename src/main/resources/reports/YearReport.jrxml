@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport name="YearReport" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20"
+              rightMargin="20" topMargin="20" bottomMargin="20" uuid="e03900c1-3c58-4dbf-bf6a-18ca5d2dc355">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="SerenityDBConnection"/>
+    <parameter name="p_Date" class="java.lang.Integer"/>
+
+    <queryString language="hql">
+        <![CDATA[SELECT p.name AS patientName,
+                       s.sessionId AS sessionId,
+                       tp.name AS therapyProgramName,
+                       t.name AS therapistName,
+                       s.sessionDate AS sessionDate,
+                       s.sessionTime AS sessionTime,
+                       s.status AS sessionStatus,
+                       pay.amount AS amount,
+                       pay.paymentStatus AS paymentStatus
+                FROM Session s
+                JOIN s.patient p
+                JOIN s.therapyProgram tp
+                JOIN s.therapist t
+                LEFT JOIN s.payment pay
+                WHERE YEAR(s.sessionDate) = :p_Date
+                ORDER BY s.sessionDate, s.sessionTime]]>
+    </queryString>
+    <field name="patientName" class="java.lang.String"/>
+    <field name="sessionId" class="java.lang.String"/>
+    <field name="therapyProgramName" class="java.lang.String"/>
+    <field name="therapistName" class="java.lang.String"/>
+    <field name="sessionDate" class="java.sql.Date"/>
+    <field name="sessionTime" class="java.sql.Time"/>
+    <field name="sessionStatus" class="java.lang.String"/>
+    <field name="amount" class="java.math.BigDecimal"/>
+    <field name="paymentStatus" class="java.lang.String"/>
+
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+
+    <title>
+        <band height="79" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="20" width="555" height="30" uuid="5b31edc5-f0d3-4803-86f7-29f165d7e07d"/>
+                <textElement textAlignment="Center">
+                    <font size="18" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Serenity Mental Health Therapy Center - Yearly Report]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="0" y="50" width="555" height="20" uuid="6bdd03bf-7cc6-4464-ac30-de841405f57d"/>
+                <textElement textAlignment="Center">
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["For Year: " + $P{p_Date}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <pageHeader>
+        <band height="35" splitType="Stretch">
+            <textField>
+                <reportElement x="455" y="5" width="100" height="20" uuid="a1b2c3d4-e5f6-7890-a1b2-c3d4e5f67890"/>
+                <textElement textAlignment="Right">
+                    <font size="10" isItalic="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement x="555" y="5" width="20" height="20" uuid="a1b2c3d4-e5f6-7890-a1b2-c3d4e5f67891"/>
+                <textElement>
+                    <font size="10" isItalic="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageHeader>
+
+    <columnHeader>
+        <band height="40" splitType="Stretch">
+            <!-- Adjusted column widths to fit within 555px total -->
+            <staticText>
+                <reportElement x="0" y="10" width="100" height="30" uuid="e9de0de6-7b0f-4605-ba92-1e5c18a37510"/>
+                <box>
+                    <pen lineWidth="1.0"/>
+                    <topPen lineWidth="1.0"/>
+                    <leftPen lineWidth="1.0"/>
+                    <bottomPen lineWidth="1.0"/>
+                    <rightPen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Patient Name]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="100" y="10" width="70" height="30" uuid="27a33aaa-c3da-43db-a935-b867270a055c"/>
+                <box>
+                    <pen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Session ID]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="170" y="10" width="90" height="30" uuid="61420425-357c-44c0-a085-0e5b8b3a7e42"/>
+                <box>
+                    <pen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Therapy Program]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="260" y="10" width="80" height="30" uuid="e99cebb7-3b54-4270-b4e3-096729f2d8af"/>
+                <box>
+                    <pen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Therapist]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="340" y="10" width="70" height="30" uuid="6ed276a2-82e0-4658-8f73-ad4c71654074"/>
+                <box>
+                    <pen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Date]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="410" y="10" width="60" height="30" uuid="6c954520-88b8-4bc7-8e71-64d2dc036060"/>
+                <box>
+                    <pen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Time]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="470" y="10" width="50" height="30" uuid="039bfab1-c5b9-4f02-90c9-5c9268c3ee1e"/>
+                <box>
+                    <pen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Status]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="520" y="10" width="60" height="30" uuid="039bfab1-c5b9-4f02-90c9-5c9268c3ee1f"/>
+                <box>
+                    <pen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Amount]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="30" splitType="Stretch">
+            <textField>
+                <reportElement x="0" y="0" width="100" height="30" uuid="bd7d8de9-d1fc-4c2c-9998-bcd4bed01b60"/>
+                <box>
+                    <pen lineWidth="0.5"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{patientName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="100" y="0" width="70" height="30" uuid="21533de8-2e5c-4e1f-b59c-80d809acb64a"/>
+                <box>
+                    <pen lineWidth="0.5"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{sessionId}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="170" y="0" width="90" height="30" uuid="7f168b40-27a9-4951-973f-a2b28eaa2192"/>
+                <box>
+                    <pen lineWidth="0.5"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{therapyProgramName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="260" y="0" width="80" height="30" uuid="3b78dd53-20a1-4723-900d-45534e16358c"/>
+                <box>
+                    <pen lineWidth="0.5"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{therapistName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="340" y="0" width="70" height="30" uuid="7401723d-0894-4fca-9710-891b12c6a4bc"/>
+                <box>
+                    <pen lineWidth="0.5"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new SimpleDateFormat("MMM dd").format($F{sessionDate})]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="410" y="0" width="60" height="30" uuid="b00ac76b-4c59-4322-b520-3c72806b99ff"/>
+                <box>
+                    <pen lineWidth="0.5"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new SimpleDateFormat("hh:mm a").format($F{sessionTime})]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="470" y="0" width="50" height="30" uuid="eb0523de-cb2d-420d-9219-540dc9225acb"/>
+                <box>
+                    <pen lineWidth="0.5"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{sessionStatus}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="520" y="0" width="60" height="30" uuid="eb0523de-cb2d-420d-9219-540dc9225acd"/>
+                <box>
+                    <pen lineWidth="0.5"/>
+                </box>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{amount} != null ? $F{amount} : "-"]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <summary>
+        <band height="50">
+            <textField>
+                <reportElement x="0" y="10" width="555" height="20" uuid="a1b2c3d4-e5f6-7890-a1b2-c3d4e5f67892"/>
+                <textElement textAlignment="Right">
+                    <font size="10" isItalic="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Report generated on " + new java.util.Date()]]></textFieldExpression>
+            </textField>
+        </band>
+    </summary>
+</jasperReport>

@@ -181,4 +181,9 @@ public class TherapySessionBOImpl implements TherapySessionBO {
     public List<TherapySession> getSessionsByTherapistAndDate(String therapistId, String date) throws Exception {
         return therapySessionDAO.getSessionsByTherapistAndDate(therapistId, date);
     }
+
+    @Override
+    public TherapySession searchSession(String selectedSessionId) throws Exception {
+        return therapySessionDAO.find(selectedSessionId);
+    }
 }
