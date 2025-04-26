@@ -31,7 +31,7 @@ public class TherapySession implements SuperEntity {
     private Therapist therapist;
     
     @Column(nullable = false)
-    private LocalDate date;
+    private String date;
 
     @Column(nullable = false)
     private String time;
@@ -39,6 +39,6 @@ public class TherapySession implements SuperEntity {
     @Column(nullable = false)
     private String status;
 
-    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL)
-    private List<Payment> payments;
+//    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL)
+//    private List<Payment> payments;
 }

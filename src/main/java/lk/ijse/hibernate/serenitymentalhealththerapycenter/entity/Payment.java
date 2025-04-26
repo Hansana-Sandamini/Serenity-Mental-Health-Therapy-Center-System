@@ -44,9 +44,9 @@ public class Payment implements SuperEntity {
     @Column(nullable = false)
     private Time time;
 
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private PaymentStatus status;
+    private String status;
 
     public enum PaymentStatus {
         SCHEDULED, COMPLETED, CANCELLED;

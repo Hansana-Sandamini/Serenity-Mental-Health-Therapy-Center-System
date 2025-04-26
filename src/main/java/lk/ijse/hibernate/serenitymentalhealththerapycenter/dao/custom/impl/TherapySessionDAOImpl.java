@@ -146,4 +146,14 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
             }
         }
     }
+
+    @Override
+    public List<TherapySession> getSessionsByTherapistAndDate(String therapistId, String date) throws Exception {
+        Session session = factoryConfiguration.getSession();
+        String hql = "FROM TherapySession WHERE therapist.therapistId = :therapistId AND date = :date";
+        Query<TherapySession> query = session.createQuery(hql, TherapySession.class);
+        query.setParameter("therapistId", therapistId);
+        query.setParameter("date", date);
+        return query.list();
+    }
 }

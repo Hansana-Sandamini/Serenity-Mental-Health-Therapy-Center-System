@@ -15,14 +15,12 @@ import lk.ijse.hibernate.serenitymentalhealththerapycenter.dto.TherapySessionDTO
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.Patient;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.Therapist;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.TherapyProgram;
+import lk.ijse.hibernate.serenitymentalhealththerapycenter.entity.TherapySession;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.util.ValidationUtil;
 import lk.ijse.hibernate.serenitymentalhealththerapycenter.view.tdm.TherapySessionTM;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class TherapySessionFormController implements Initializable {
@@ -58,7 +56,7 @@ public class TherapySessionFormController implements Initializable {
     private ComboBox<String> cmbTimeAmPm;
 
     @FXML
-    private TableColumn<TherapySessionTM, Date> colDate;
+    private TableColumn<TherapySessionTM, String> colDate;
 
     @FXML
     private TableColumn<TherapySessionTM, String> colPatientID;
@@ -259,7 +257,7 @@ public class TherapySessionFormController implements Initializable {
             cmbProgramID.setValue(selectedItem.getProgramId());
             cmbPatientID.setValue(selectedItem.getPatientId());
             cmbTherapistID.setValue(selectedItem.getTherapistId());
-            txtDate.setValue(selectedItem.getDate());
+            txtDate.setValue(LocalDate.parse(selectedItem.getDate()));
             txtTime.setText(selectedItem.getTime());
             cmbStatus.setValue(selectedItem.getStatus());
         }
@@ -270,21 +268,32 @@ public class TherapySessionFormController implements Initializable {
         String programId = cmbProgramID.getValue();
         String patientId = cmbPatientID.getValue();
         String therapistId = cmbTherapistID.getValue();
-        LocalDate date = txtDate.getValue();
-        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-//        String time = txtTime.getText() + " " + cmbTimeAmPm.getValue();
+        String date = String.valueOf(txtDate.getValue());
+        String time = txtTime.getText() + " " + cmbTimeAmPm.getValue();
         String status = cmbStatus.getValue();
 
         return new TherapySessionDTO(sessionId, programId, patientId, therapistId, date, time, status);
     }
 
-    boolean validateTextFields() {
+    boolean validateTextFields() throws Exception {
         boolean isValidTime = ValidationUtil.isValidTime(txtTime);
         boolean isPatientSelected = cmbPatientID.getValue() != null;
         boolean isProgramSelected = cmbProgramID.getValue() != null;
         boolean isTherapistSelected = cmbTherapistID.getValue() != null;
         boolean isStatusSelected = cmbStatus.getValue() != null;
-        boolean isDateValid = txtDate.getValue() != null && !txtDate.getValue().isBefore(LocalDate.now());
+        boolean isDateValid = txtDate.getValue() != null;
+
+        boolean isTherapistAvailable = true;
+        if (isTherapistSelected && isDateValid) {
+            Therapist therapist = therapistBO.searchTherapist(cmbTherapistID.getValue());
+            if (therapist != null) {
+                List<TherapySession> sessions = sessionBO.getSessionsByTherapistAndDate(cmbTherapistID.getValue(), String.valueOf(txtDate.getValue()));
+                if (!sessions.isEmpty()) {
+                    new Alert(Alert.AlertType.WARNING, "Selected therapist is not available on this date!").show();
+                    isTherapistAvailable = false;
+                }
+            }
+        }
 
         if (!isPatientSelected) {
             new Alert(Alert.AlertType.WARNING, "Please select a Patient!").show();
@@ -303,7 +312,7 @@ public class TherapySessionFormController implements Initializable {
         }
 
         return isValidTime && isPatientSelected && isProgramSelected &&
-                isTherapistSelected && isStatusSelected && isDateValid;
+                isTherapistSelected && isStatusSelected && isDateValid && isTherapistAvailable;
     }
 
     @Override
