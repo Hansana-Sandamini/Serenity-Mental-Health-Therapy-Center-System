@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio -->
 <jasperReport name="YearReport" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20"
               rightMargin="20" topMargin="20" bottomMargin="20" uuid="e03900c1-3c58-4dbf-bf6a-18ca5d2dc355">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="SerenityDBConnection"/>
-    <parameter name="p_Date" class="java.lang.Integer"/>
-
+    <parameter name="p_Date" class="java.lang.Integer">
+        <parameterDescription><![CDATA[Year to report on]]></parameterDescription>
+    </parameter>
     <queryString language="hql">
         <![CDATA[SELECT p.name AS patientName,
                        s.sessionId AS sessionId,

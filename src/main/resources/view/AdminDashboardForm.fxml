@@ -20,15 +20,88 @@
             <Font name="DejaVu Serif Bold" size="48.0" />
          </font>
       </Label>
-      <Group layoutX="177.0" layoutY="274.0" stylesheets="@../assets/styles/styles.css">
+      <Group layoutX="204.0" layoutY="288.0" stylesheets="@../assets/styles/styles.css">
          <children>
-            <FontAwesomeIcon fx:id="therapistIcon" iconName="USER_MD" layoutX="125.0" layoutY="3.71429443359375" onMouseClicked="#therapistIconOnAction" size="5em" text="" styleClass="icon"/>
-            <FontAwesomeIcon fx:id="userIcon" iconName="USER" layoutX="-5.0" layoutY="3.71429443359375" onMouseClicked="#userIconOnAction" size="5em" text="" styleClass="icon"/>
-            <FontAwesomeIcon fx:id="paymentIcon" iconName="CREDIT_CARD" layoutX="719.0" layoutY="1.0" onMouseClicked="#paymentIconOnAction" size="5em" styleClass="icon"/>
-            <FontAwesomeIcon fx:id="reportIcon" iconName="FILE_TEXT" layoutX="867.0" layoutY="2.0" onMouseClicked="#reportIconOnAction" size="5em" text="" wrappingWidth="58.71428680419922" styleClass="icon"/>
-            <FontAwesomeIcon fx:id="therapyProgramIcon" iconName="FOLDER_OPEN" layoutX="421.0" layoutY="5.0" onMouseClicked="#therapyProgramIconOnAction" size="5em" styleClass="icon"/>
-            <FontAwesomeIcon fx:id="patientIcon" iconName="BED" layoutX="263.0" layoutY="6.0" onMouseClicked="#patientIconOnAction" size="5em" styleClass="icon"/>
-            <FontAwesomeIcon fx:id="therapySessionIcon" iconName="CALENDAR" layoutX="577.0" onMouseClicked="#therapySessionIconOnAction" size="5em" styleClass="icon"/>
+            <AnchorPane layoutX="577.0" layoutY="133.0" prefHeight="200.0" prefWidth="172.0" style="-fx-background-color: #dfe7fd; -fx-border-color: black; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+               <children>
+                  <Label layoutX="20.0" layoutY="97.0" prefHeight="78.0" prefWidth="140.0" text="      Logout">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="347.0" layoutY="133.0" prefHeight="200.0" prefWidth="172.0" style="-fx-background-color: #dfe7fd; -fx-border-color: black; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+               <children>
+                  <Label layoutX="20.0" layoutY="97.0" prefHeight="78.0" prefWidth="140.0" text="     Reports">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="110.0" layoutY="133.0" prefHeight="200.0" prefWidth="172.0" style="-fx-background-color: #dfe7fd; -fx-border-color: black; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+               <children>
+                  <Label layoutX="20.0" layoutY="97.0" prefHeight="78.0" prefWidth="140.0" text="     Payment&#10;Management">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="790.0" layoutY="-117.0" prefHeight="200.0" prefWidth="172.0" style="-fx-background-color: #dfe7fd; -fx-border-color: black; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+               <children>
+                  <Label layoutX="20.0" layoutY="97.0" prefHeight="93.0" prefWidth="140.0" text="      Therapy&#10;      Session&#10;Management">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="560.0" layoutY="-117.0" prefHeight="200.0" prefWidth="172.0" style="-fx-background-color: #dfe7fd; -fx-border-color: black; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+               <children>
+                  <Label layoutX="20.0" layoutY="97.0" prefHeight="93.0" prefWidth="140.0" text="      Therapy&#10;     Program&#10;Management">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="340.0" layoutY="-117.0" prefHeight="200.0" prefWidth="172.0" style="-fx-background-color: #dfe7fd; -fx-border-color: black; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+               <children>
+                  <Label layoutX="20.0" layoutY="97.0" prefHeight="78.0" prefWidth="140.0" text="      Patient&#10;Management">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="130.0" layoutY="-117.0" prefHeight="200.0" prefWidth="172.0" style="-fx-background-color: #dfe7fd; -fx-border-color: black; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+               <children>
+                  <Label layoutX="20.0" layoutY="97.0" prefHeight="78.0" prefWidth="140.0" text="    Therapist&#10;Management">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="-100.0" layoutY="-117.0" prefHeight="200.0" prefWidth="172.0" style="-fx-background-color: #dfe7fd; -fx-border-color: black; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+               <children>
+                  <Label layoutX="20.0" layoutY="97.0" prefHeight="78.0" prefWidth="140.0" text="        User&#10;Management">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <FontAwesomeIcon fx:id="therapistIcon" iconName="USER_MD" layoutX="186.0" layoutY="-36.28570556640625" onMouseClicked="#therapistIconOnAction" size="5em" styleClass="icon" text="" />
+            <FontAwesomeIcon fx:id="userIcon" iconName="USER" layoutX="-41.0" layoutY="-40.28570556640625" onMouseClicked="#userIconOnAction" size="5em" styleClass="icon" text="" />
+            <FontAwesomeIcon fx:id="paymentIcon" iconName="CREDIT_CARD" layoutX="159.0" layoutY="211.0" onMouseClicked="#paymentIconOnAction" size="5em" styleClass="icon" />
+            <FontAwesomeIcon fx:id="reportIcon" iconName="FILE_TEXT" layoutX="407.0" layoutY="212.0" onMouseClicked="#reportIconOnAction" size="5em" styleClass="icon" text="" wrappingWidth="58.71428680419922" />
+            <FontAwesomeIcon fx:id="therapyProgramIcon" iconName="FOLDER_OPEN" layoutX="612.0" layoutY="-35.0" onMouseClicked="#therapyProgramIconOnAction" size="5em" styleClass="icon" />
+            <FontAwesomeIcon fx:id="patientIcon" iconName="BED" layoutX="393.0" layoutY="-34.0" onMouseClicked="#patientIconOnAction" size="5em" styleClass="icon" />
+            <FontAwesomeIcon fx:id="therapySessionIcon" iconName="CALENDAR" layoutX="845.0" layoutY="-32.0" onMouseClicked="#therapySessionIconOnAction" size="5em" styleClass="icon" />
+            <FontAwesomeIcon fx:id="logoutIcon" iconName="SIGN_OUT" layoutX="635.0" layoutY="218.0" onMouseClicked="#logoutIconOnAction" size="5em" styleClass="icon" />
          </children>
       </Group>
    </children>

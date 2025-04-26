@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class ReceptionistDashboardFormController {
 
@@ -32,6 +34,9 @@ public class ReceptionistDashboardFormController {
 
     @FXML
     private FontAwesomeIcon userIcon;
+
+    @FXML
+    private FontAwesomeIcon logoutIcon;
 
     public void showPopup(String fxmlPath, String title) {
         try {
@@ -80,4 +85,20 @@ public class ReceptionistDashboardFormController {
         showPopup("/view/UserForm.fxml", "User Management");
     }
 
+    @FXML
+    void logoutIconOnAction(MouseEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to Logout?", ButtonType.YES, ButtonType.NO);
+        Optional<ButtonType> buttonType = alert.showAndWait();
+
+        if (buttonType.isPresent() && buttonType.get().equals(ButtonType.YES)) {
+            try {
+                receptionistDashboardPane.getChildren().clear();
+                AnchorPane load = FXMLLoader.load(getClass().getResource("/view/WelcomeForm.fxml"));
+                receptionistDashboardPane.getChildren().add(load);
+                new Alert(Alert.AlertType.INFORMATION, "Logged Out Successfully...!").show();
+            } catch (IOException e) {
+                new Alert(Alert.AlertType.ERROR, "Fail to load page...!").show();
+            }
+        }
+    }
 }
