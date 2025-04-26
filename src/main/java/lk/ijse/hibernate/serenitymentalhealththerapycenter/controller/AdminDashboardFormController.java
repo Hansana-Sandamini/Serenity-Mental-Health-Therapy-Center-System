@@ -57,7 +57,7 @@ public class AdminDashboardFormController {
 
     @FXML
     void reportIconOnAction(MouseEvent event) {
-
+        navigateTo("/view/ReportsForm.fxml");
     }
 
     @FXML

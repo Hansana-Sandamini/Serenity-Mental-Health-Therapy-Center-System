@@ -51,7 +51,7 @@ public class ReceptionistDashboardFormController {
 
     @FXML
     void reportIconOnAction(MouseEvent event) {
-
+        navigateTo("/view/ReportsForm.fxml");
     }
 
     @FXML
