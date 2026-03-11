@@ -75,6 +75,40 @@ The system supports authentication with role-based access.
 
 ---
 
+## 📸 System Screenshots
+
+### 🏠 Home Page
+<img width="1300" height="833" alt="Screenshot from 2026-03-11 14-39-57" src="https://github.com/user-attachments/assets/8c35a0e5-7d73-4461-aa39-2d329420ef32" />
+
+### 🔐 Admin Login
+<img width="1300" height="833" alt="Screenshot from 2026-03-11 14-40-20" src="https://github.com/user-attachments/assets/a37322ce-4eb6-4673-83f9-4f54c1690cdb" />
+
+### 📊 Admin Dashboard
+<img width="1300" height="833" alt="Screenshot from 2026-03-11 14-40-44" src="https://github.com/user-attachments/assets/264c300d-6e96-422e-9772-d92e04ba5e8e" />
+
+### 🧾 Receptionist Dashboard
+<img width="1300" height="833" alt="Screenshot from 2026-03-11 14-47-13" src="https://github.com/user-attachments/assets/4e27d8ce-beec-4e22-94a8-3a38fd529cfc" />
+
+### 👥 User Management
+<img width="1300" height="833" alt="Screenshot from 2026-03-11 14-41-00" src="https://github.com/user-attachments/assets/b7f65fc3-8f2f-4c6e-8d4f-4155b932dbc2" />
+
+### 👩‍⚕️ Therapist Management
+<img width="1300" height="833" alt="Screenshot from 2026-03-11 14-42-28" src="https://github.com/user-attachments/assets/6e85db53-0531-4eae-99dc-cb7f7828230a" />
+
+### 🧑‍🤝‍🧑 Patient Management
+<img width="1300" height="833" alt="Screenshot from 2026-03-11 14-42-50" src="https://github.com/user-attachments/assets/8942782a-fdaa-428d-b08a-123246e471f4" />
+
+### 🧠 Therapy Program Management
+<img width="1300" height="833" alt="Screenshot from 2026-03-11 14-43-05" src="https://github.com/user-attachments/assets/0c5c38eb-aecf-418f-9b6c-1e5f1b3387c0" />
+
+### 📅 Therapy Session Management
+<img width="1300" height="833" alt="Screenshot from 2026-03-11 14-43-15" src="https://github.com/user-attachments/assets/ed9734c4-dfbb-4ab3-a73f-682504205ee6" />
+
+### 📊 Reports
+<img width="1300" height="833" alt="Screenshot from 2026-03-11 14-43-41" src="https://github.com/user-attachments/assets/c3f8a54d-cb7f-4b68-ac2c-b67ae81f52e7" />
+
+---
+
 ## 🧩 Therapy Programs
 
 | Program ID | Program Name | Duration | Fee |
